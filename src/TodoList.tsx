@@ -1,7 +1,11 @@
-import React, {ChangeEvent, FC, useState} from 'react';
+import React, {ChangeEvent, FC} from 'react';
 import {FilterType, TaskType, TodolistType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
+import IconButton from "@mui/material/IconButton";
+import Delete from "@mui/icons-material/Delete";
+import Button from '@mui/material/Button'
+import Checkbox from "@mui/material/Checkbox";
 
 type TodoListType = {
     todolist: TodolistType
@@ -37,15 +41,17 @@ export const TodoList: FC<TodoListType> = ({
 
         return (
             <li key={task.id}>
-                <input
-                    type="checkbox"
-                    checked={task.isDone}
-                    onChange={onChangeTaskStatusHandler}
-                />
-                {/*<span className={task.isDone ? "task-done" : ''}>{task.taskTitle}</span>*/}
+                {/*<input*/}
+                {/*    type="checkbox"*/}
+                {/*    checked={task.isDone}*/}
+                {/*    onChange={onChangeTaskStatusHandler}*/}
+                {/*/>*/}
+                <Checkbox checked={task.isDone} onChange={onChangeTaskStatusHandler}/>
                 <EditableSpan className={task.isDone ? "task-done" : ''} title={task.taskTitle}
                               callback={(newTitle: string) => updateTaskHandler(task.id, newTitle)}/>
-                <button onClick={onClickDeleteTaskHandler}>X</button>
+                <IconButton aria-label="delete" onClick={onClickDeleteTaskHandler}>
+                    <Delete/>
+                </IconButton>
             </li>
         )
     })
@@ -64,7 +70,9 @@ export const TodoList: FC<TodoListType> = ({
     return (
         <div className={'todolist'}>
             <EditableSpan className={'todolistTitle'} title={todolist.todoTitle} callback={updateTodoTitleHandler}/>
-            <button onClick={onClickDeleteTodolistHandler}>X</button>
+            <IconButton aria-label="delete" onClick={onClickDeleteTodolistHandler}>
+                <Delete/>
+            </IconButton>
 
             <AddItemForm callback={addTaskHandler}/>
 
@@ -73,15 +81,12 @@ export const TodoList: FC<TodoListType> = ({
                 : <span>Your todolist is empty!</span>
             }
             <div>
-                <button className={filter === "all" ? "filter-active" : ''}
-                        onClick={() => changeFilter(todolist.id, "all")}>All
-                </button>
-                <button className={filter === "active" ? "filter-active" : ''}
-                        onClick={() => changeFilter(todolist.id, "active")}>Active
-                </button>
-                <button className={filter === "completed" ? "filter-active" : ''}
-                        onClick={() => changeFilter(todolist.id, "completed")}>Completed
-                </button>
+                <Button variant={filter === "all" ? 'contained' : "outlined"} color={'success'}
+                        onClick={() => changeFilter(todolist.id, "all")}>All</Button>
+                <Button variant={filter === "active" ? 'contained' : "outlined"} color={'primary'}
+                        onClick={() => changeFilter(todolist.id, "active")}>Active</Button>
+                <Button variant={filter === "completed" ? 'contained' : "outlined"} color={'error'}
+                        onClick={() => changeFilter(todolist.id, "completed")}>Completed</Button>
             </div>
         </div>
     )

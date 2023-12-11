@@ -1,4 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, FC, useState} from 'react';
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 type AddItemFormPropsType = {
     callback: (netTaskTitle: string) => void
@@ -16,7 +18,7 @@ export const AddItemForm: FC<AddItemFormPropsType> = ({callback}) => {
     const onClickAddTaskHandler = () => {
         if (newTaskTitle.trim()) {
             callback(newTaskTitle.trim())
-        } else setError('Название задания не может быть пустым!')
+        } else setError('Название не может быть пустым!')
         setNewTaskTitle('')
     };
 
@@ -25,16 +27,20 @@ export const AddItemForm: FC<AddItemFormPropsType> = ({callback}) => {
             onClickAddTaskHandler()
         }
     };
+
+    const stylesButton = {maxWidth: '40px', maxHeight: '40px', minWidth: '40px', minHeight: '40px', marginLeft: '10px'}
+
     return (
         <div>
-            <input
-                className={error ? "input-error" : ''}
-                value={newTaskTitle}
-                onChange={onChangeNewTaskTitleHandler}
-                onKeyDown={onKeyDownAddItemHandler}
-            />
-            <button onClick={onClickAddTaskHandler} disabled={!newTaskTitle}>+</button>
-            {error && <div className={error ? "error-message" : ''}>{error}</div>}
+            <TextField variant="outlined"
+                       label={error ? error : 'Введите название...'}
+                       size={'small'}
+                       error={!!error}
+                       value={newTaskTitle}
+                       onChange={onChangeNewTaskTitleHandler}
+                       onKeyDown={onKeyDownAddItemHandler}/>
+            <Button variant={'contained'} color={'primary'} onClick={onClickAddTaskHandler} disabled={!newTaskTitle}
+                    style={stylesButton}>+</Button>
         </div>
     )
 }
