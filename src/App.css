@@ -28,4 +28,13 @@
 
 .filter-active {
   background-color: blueviolet;
+  color: white;
+}
+
+.error-message {
+  color: red;
+}
+
+.todolistTitle {
+  font-weight: bold;
 }

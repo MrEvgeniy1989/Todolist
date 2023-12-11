@@ -1,5 +1,7 @@
 import React, {ChangeEvent, FC, useState} from 'react';
 import {FilterType, TaskType, TodolistType} from "./App";
+import {AddItemForm} from "./AddItemForm";
+import {EditableSpan} from "./EditableSpan";
 
 type TodoListType = {
     todolist: TodolistType
@@ -10,6 +12,8 @@ type TodoListType = {
     changeTaskStatus: (todolistId: string, taskId: string, newTaskStatus: boolean) => void
     deleteTask: (todolistId: string, taskId: string) => void
     deleteTodolist: (todolistId: string) => void
+    updateTask: (todolistId: string, taskId: string, newTitle: string) => void
+    updateTodoTitle: (todolistId: string, newTitle: string) => void
 }
 
 
@@ -21,11 +25,11 @@ export const TodoList: FC<TodoListType> = ({
                                                addTask,
                                                changeTaskStatus,
                                                deleteTask,
-                                               deleteTodolist
+                                               deleteTodolist,
+                                               updateTask,
+                                               updateTodoTitle
                                            }) => {
-
-    const [newTaskTitle, setNewTaskTitle] = useState('')
-    const [error, setError] = useState('')
+    const updateTaskHandler = (taskId: string, newTitle: string) => updateTask(todolist.id, taskId, newTitle)
 
     const TaskList = tasks.map((task) => {
         const onClickDeleteTaskHandler = () => deleteTask(todolist.id, task.id)
@@ -38,40 +42,31 @@ export const TodoList: FC<TodoListType> = ({
                     checked={task.isDone}
                     onChange={onChangeTaskStatusHandler}
                 />
-                <span className={task.isDone ? "task-done" : ''}>{task.taskTitle}</span>
+                {/*<span className={task.isDone ? "task-done" : ''}>{task.taskTitle}</span>*/}
+                <EditableSpan className={task.isDone ? "task-done" : ''} title={task.taskTitle}
+                              callback={(newTitle: string) => updateTaskHandler(task.id, newTitle)}/>
                 <button onClick={onClickDeleteTaskHandler}>X</button>
             </li>
         )
     })
 
-    const onChangeNewTaskTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        error && setError('')
-        setNewTaskTitle(event.currentTarget.value)
-    };
-    const onClickAddTaskHandler = () => {
-        if (newTaskTitle.trim()) {
-            addTask(todolist.id, newTaskTitle.trim())
-        } else setError('Название задания не может быть пустым!')
-        setNewTaskTitle('')
-    };
+
+    const addTaskHandler = (newTaskTitle: string) => {
+        addTask(todolist.id, newTaskTitle)
+    }
 
     const onClickDeleteTodolistHandler = () => {
         deleteTodolist(todolist.id)
     }
+    const updateTodoTitleHandler = (newTitle: string) => {
+        updateTodoTitle(todolist.id, newTitle)
+    }
     return (
         <div className={'todolist'}>
-            <h3>
-                {todolist.todoTitle}
-                <button onClick={onClickDeleteTodolistHandler}>X</button>
-            </h3>
+            <EditableSpan className={'todolistTitle'} title={todolist.todoTitle} callback={updateTodoTitleHandler}/>
+            <button onClick={onClickDeleteTodolistHandler}>X</button>
 
-            <div>
-                <input value={newTaskTitle} onChange={onChangeNewTaskTitleHandler}
-                       className={error ? "input-error" : ''}/>
-                <button onClick={onClickAddTaskHandler} disabled={!newTaskTitle}>+
-                </button>
-                <div>{error ? error : ''}</div>
-            </div>
+            <AddItemForm callback={addTaskHandler}/>
 
             {tasks.length
                 ? <ul>{TaskList}</ul>
