@@ -1,4 +1,4 @@
-import {FilterType, initialStateTodolistsType, TodolistType} from "../App";
+import {FilterType, TodolistType} from "../App";
 
 type actionType =
     | changeFilterACType
@@ -9,9 +9,9 @@ type actionType =
 type changeFilterACType = ReturnType<typeof changeFilterAC>
 export type deleteTodolistACType = ReturnType<typeof deleteTodolistAC>
 export type addTodolistACType = ReturnType<typeof addTodolistAC>
-type updateTodoTitleACType = ReturnType<typeof updateTodoTitleAC>
+type updateTodoTitleACType = ReturnType<typeof changeTodoTitleAC>
 
-export const todolistsReducer = (state: initialStateTodolistsType, action: actionType): initialStateTodolistsType => {
+export const todolistsReducer = (state: TodolistType[], action: actionType): TodolistType[] => {
     switch (action.type) {
         case 'CHANGE_FILTER':
             return state.map((todolist) => todolist.id === action.payload.todolistId ? {
@@ -27,7 +27,7 @@ export const todolistsReducer = (state: initialStateTodolistsType, action: actio
                 filter: 'all'
             }
             return [newTodolist, ...state]
-        case "UPDATE_TODOLIST_TITLE":
+        case "CHANGE_TODOLIST_TITLE":
             return state.map(todolist => todolist.id === action.payload.todolistId ? {
                 ...todolist,
                 todoTitle: action.payload.newTodolistTitle
@@ -49,7 +49,7 @@ export const addTodolistAC = (todolistId: string, newTodolistTitle: string) => (
     type: 'ADD_TODOLIST',
     payload: {todolistId, newTodolistTitle}
 } as const)
-export const updateTodoTitleAC = (todolistId: string, newTodolistTitle: string) => ({
-    type: 'UPDATE_TODOLIST_TITLE',
+export const changeTodoTitleAC = (todolistId: string, newTodolistTitle: string) => ({
+    type: 'CHANGE_TODOLIST_TITLE',
     payload: {todolistId, newTodolistTitle}
 } as const)

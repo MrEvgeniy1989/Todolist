@@ -1,11 +1,12 @@
-import React, {ChangeEvent, FC} from 'react';
+import React, {FC} from 'react';
 import {FilterType, TaskType, TodolistType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
 import Button from '@mui/material/Button'
-import Checkbox from "@mui/material/Checkbox";
+import {CheckBox} from "./components/Checkbox";
+// import Checkbox from "@mui/material/Checkbox";
 
 type TodoListType = {
     todolist: TodolistType
@@ -35,18 +36,16 @@ export const TodoList: FC<TodoListType> = ({
                                            }) => {
     const updateTaskHandler = (taskId: string, newTitle: string) => updateTask(todolist.id, taskId, newTitle)
 
+    const onChangeTaskStatusHandler = (taskId: string, newTaskStatus: boolean) => changeTaskStatus(todolist.id, taskId, newTaskStatus)
+
     const TaskList = tasks.map((task) => {
         const onClickDeleteTaskHandler = () => deleteTask(todolist.id, task.id)
-        const onChangeTaskStatusHandler = (event: ChangeEvent<HTMLInputElement>) => changeTaskStatus(todolist.id, task.id, event.currentTarget.checked)
+        // const onChangeTaskStatusHandler = (event: ChangeEvent<HTMLInputElement>) => changeTaskStatus(todolist.id, task.id, event.currentTarget.checked)
 
         return (
             <li key={task.id}>
-                {/*<input*/}
-                {/*    type="checkbox"*/}
-                {/*    checked={task.isDone}*/}
-                {/*    onChange={onChangeTaskStatusHandler}*/}
-                {/*/>*/}
-                <Checkbox checked={task.isDone} onChange={onChangeTaskStatusHandler}/>
+                {/*<Checkbox checked={task.isDone} onChange={(event) => onChangeTaskStatusHandler(task.id, event.currentTarget.checked)}/>*/}
+                <CheckBox checked={task.isDone} callback={(value) => onChangeTaskStatusHandler(task.id, value)}/>
                 <EditableSpan className={task.isDone ? "task-done" : ''} title={task.taskTitle}
                               callback={(newTitle: string) => updateTaskHandler(task.id, newTitle)}/>
                 <IconButton aria-label="delete" onClick={onClickDeleteTaskHandler}>

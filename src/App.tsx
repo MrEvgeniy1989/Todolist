@@ -12,7 +12,7 @@ import {
     changeFilterAC,
     deleteTodolistAC,
     todolistsReducer,
-    updateTodoTitleAC
+    changeTodoTitleAC
 } from "./reducers/todolistsReducer";
 
 export type FilterType = "all" | "active" | "completed"
@@ -27,7 +27,6 @@ export type TodolistType = {
     filter: FilterType
 }
 export type initialStateTasksType = typeof initialStateTasks
-export type initialStateTodolistsType = typeof initialStateTodolists
 
 const todolistId1 = crypto.randomUUID()
 const todolistId2 = crypto.randomUUID()
@@ -115,7 +114,7 @@ export const App = () => {
         //     ...todolist,
         //     todoTitle: newTitle
         // } : todolist))
-        dispatchTodolists(updateTodoTitleAC(todolistId, newTitle))
+        dispatchTodolists(changeTodoTitleAC(todolistId, newTitle))
     }
 
     return (
