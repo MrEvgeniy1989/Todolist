@@ -1,4 +1,5 @@
 import {FilterType, TodolistType} from "../App";
+import {v1} from "uuid";
 
 type actionType =
     | changeFilterACType
@@ -45,9 +46,9 @@ export const deleteTodolistAC = (todolistId: string) => ({
     type: 'DELETE_TODOLIST',
     payload: {todolistId}
 } as const)
-export const addTodolistAC = (todolistId: string, newTodolistTitle: string) => ({
+export const addTodolistAC = (newTodolistTitle: string) => ({
     type: 'ADD_TODOLIST',
-    payload: {todolistId, newTodolistTitle}
+    payload: {todolistId: v1(), newTodolistTitle}
 } as const)
 export const changeTodoTitleAC = (todolistId: string, newTodolistTitle: string) => ({
     type: 'CHANGE_TODOLIST_TITLE',

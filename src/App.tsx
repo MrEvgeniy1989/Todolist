@@ -14,6 +14,7 @@ import {
     todolistsReducer,
     changeTodoTitleAC
 } from "./reducers/todolistsReducer";
+import {v1} from "uuid";
 
 export type FilterType = "all" | "active" | "completed"
 export type TaskType = {
@@ -26,10 +27,12 @@ export type TodolistType = {
     todoTitle: string
     filter: FilterType
 }
-export type initialStateTasksType = typeof initialStateTasks
+export type TasksStateType = {
+    [key: string]: TaskType[]
+}
 
-const todolistId1 = crypto.randomUUID()
-const todolistId2 = crypto.randomUUID()
+const todolistId1 = v1()
+const todolistId2 = v1()
 
 const initialStateTodolists: TodolistType[] = [
     {id: todolistId1, todoTitle: "Что изучить", filter: 'all'},
@@ -38,18 +41,18 @@ const initialStateTodolists: TodolistType[] = [
 
 const initialStateTasks = {
     [todolistId1]: [
-        {id: crypto.randomUUID(), taskTitle: "HTML", isDone: true},
-        {id: crypto.randomUUID(), taskTitle: "CSS", isDone: true},
-        {id: crypto.randomUUID(), taskTitle: "JS", isDone: true},
-        {id: crypto.randomUUID(), taskTitle: "React", isDone: false},
-        {id: crypto.randomUUID(), taskTitle: "Redux", isDone: false}
+        {id: v1(), taskTitle: "HTML", isDone: true},
+        {id: v1(), taskTitle: "CSS", isDone: true},
+        {id: v1(), taskTitle: "JS", isDone: true},
+        {id: v1(), taskTitle: "React", isDone: false},
+        {id: v1(), taskTitle: "Redux", isDone: false}
     ],
     [todolistId2]: [
-        {id: crypto.randomUUID(), taskTitle: "Milk", isDone: true},
-        {id: crypto.randomUUID(), taskTitle: "Chocolate", isDone: false},
-        {id: crypto.randomUUID(), taskTitle: "Bread", isDone: true},
-        {id: crypto.randomUUID(), taskTitle: "Butter", isDone: true},
-        {id: crypto.randomUUID(), taskTitle: "Banana", isDone: false}
+        {id: v1(), taskTitle: "Milk", isDone: true},
+        {id: v1(), taskTitle: "Chocolate", isDone: false},
+        {id: v1(), taskTitle: "Bread", isDone: true},
+        {id: v1(), taskTitle: "Butter", isDone: true},
+        {id: v1(), taskTitle: "Banana", isDone: false}
     ]
 }
 
@@ -103,9 +106,9 @@ export const App = () => {
         // const newTodolist: TodolistType = {id: todolistId, todoTitle: newTodolistTitle, filter: 'all'}
         // setTodolists([newTodolist, ...todolists])
         // setTasks({...tasks, [todolistId]: []})
-        const todolistId = crypto.randomUUID()
-        dispatchTodolists(addTodolistAC(todolistId, newTodolistTitle))
-        dispatchTasks(addTodolistAC(todolistId, newTodolistTitle))
+        // const todolistId = v1()
+        dispatchTodolists(addTodolistAC(newTodolistTitle))
+        dispatchTasks(addTodolistAC(newTodolistTitle))
     }
 
 

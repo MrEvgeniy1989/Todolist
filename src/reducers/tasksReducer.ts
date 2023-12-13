@@ -1,5 +1,6 @@
-import {initialStateTasksType, TaskType} from "../App";
+import {TasksStateType, TaskType} from "../App";
 import {addTodolistACType, deleteTodolistACType} from "./todolistsReducer";
+import {v1} from "uuid";
 
 type actionType =
     | deleteTaskACType
@@ -14,10 +15,10 @@ type addTaskACType = ReturnType<typeof addTaskAC>
 type changeTaskStatusACType = ReturnType<typeof changeTaskStatusAC>
 type updateTaskACType = ReturnType<typeof updateTaskTitleAC>
 
-export const tasksReducer = (state: initialStateTasksType, action: actionType): initialStateTasksType => {
+export const tasksReducer = (state: TasksStateType, action: actionType): TasksStateType => {
     switch (action.type) {
         case "ADD_TASK":
-            const newTask: TaskType = {id: crypto.randomUUID(), isDone: false, taskTitle: action.payload.netTaskTitle}
+            const newTask: TaskType = {id: v1(), isDone: false, taskTitle: action.payload.netTaskTitle}
             return {...state, [action.payload.todolistId]: [newTask, ...state[action.payload.todolistId]]}
         case "CHANGE_TASK_STATUS":
             return {
@@ -41,8 +42,9 @@ export const tasksReducer = (state: initialStateTasksType, action: actionType): 
                 } : task)
             }
         case "DELETE_TODOLIST":
-            delete state[action.payload.todolistId]
-            return {...state}
+            const copyState= {...state}
+            delete copyState[action.payload.todolistId]
+            return copyState
         case "ADD_TODOLIST":
             return {...state, [action.payload.todolistId]: []}
         default:
