@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, FC, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, FC, useState, memo} from 'react';
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
@@ -6,12 +6,12 @@ type AddItemFormPropsType = {
     callback: (netTaskTitle: string) => void
 }
 
-export const AddItemForm: FC<AddItemFormPropsType> = ({callback}) => {
+export const AddItemForm: FC<AddItemFormPropsType> = memo(({callback}) => {
     const [newTaskTitle, setNewTaskTitle] = useState('')
-    const [error, setError] = useState('')
+    const [error, setError] = useState<string | null>('')
 
     const onChangeNewTaskTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        error && setError('')
+        error && setError(null)
         setNewTaskTitle(event.currentTarget.value)
     };
 
@@ -43,4 +43,4 @@ export const AddItemForm: FC<AddItemFormPropsType> = ({callback}) => {
                     style={stylesButton}>+</Button>
         </div>
     )
-}
+})
