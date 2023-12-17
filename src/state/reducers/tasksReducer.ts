@@ -1,4 +1,4 @@
-import {TasksStateType, TaskType} from "../../App";
+import {TasksStateType, TaskType} from "../../App/App";
 import {addTodolistACType, deleteTodolistACType} from "./todolistsReducer";
 import {v1} from "uuid";
 

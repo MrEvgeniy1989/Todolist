@@ -5,8 +5,8 @@ import {todolistsReducer} from "./reducers/todolistsReducer";
 export type AppRootStateType = ReturnType<typeof rootReducer>
 
 const rootReducer = combineReducers({
+    todolists: todolistsReducer,
     tasks: tasksReducer,
-    todolists: todolistsReducer
 })
 
 export const store = legacy_createStore(rootReducer)

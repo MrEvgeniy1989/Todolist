@@ -2,8 +2,8 @@ import React, {ChangeEvent, KeyboardEvent, FC, useState, memo} from 'react';
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
-type AddItemFormPropsType = {
-    callback: (netTaskTitle: string) => void
+export type AddItemFormPropsType = {
+    callback: (newTitle: string) => void
 }
 
 export const AddItemForm: FC<AddItemFormPropsType> = memo(({callback}) => {
