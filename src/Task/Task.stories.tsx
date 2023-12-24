@@ -1,10 +1,9 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {Task} from "./Task";
-import {Provider, useSelector} from "react-redux";
-import {AppRootStateType, store} from "../state/store";
-import {useState} from "react";
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "../state/store";
 import {ReduxStoreProviderDecorator} from "../decorators/ReduxStoreProviderDecorator";
-import {TaskType} from "../App/App";
+import {TaskPriorities, TaskStatuses, TaskType} from "../api/todolist-api";
 
 
 const meta: Meta<typeof Task> = {
@@ -17,7 +16,19 @@ const meta: Meta<typeof Task> = {
     argTypes: {},
     args: {
         todolistId: '12321a',
-        task: {id: '111', taskTitle: 'React', isDone: true}
+        // task: {id: '111', title: 'React', status: true}
+        task: {
+            id: '111',
+            title: 'HardCode',
+            description: '',
+            todoListId: 'todolistId1',
+            order: 0,
+            status: TaskStatuses.Completed,
+            priority: TaskPriorities.Low,
+            startDate: '',
+            deadline: '',
+            addedDate: '',
+        }
     },
     decorators: [ReduxStoreProviderDecorator]
 }
@@ -29,14 +40,38 @@ export const TaskIsDoneStory: Story = {};
 
 export const TaskIsNotDoneStory: Story = {
     args: {
-        task: {id: '222', taskTitle: 'React', isDone: false}
+        // task: {id: '222', title: 'React', isDone: false}
+        task: {
+            id: '222',
+            title: 'React',
+            description: '',
+            todoListId: 'todolistId1',
+            order: 0,
+            status: TaskStatuses.New,
+            priority: TaskPriorities.Low,
+            startDate: '',
+            deadline: '',
+            addedDate: '',
+        }
     },
 };
 
 const TaskWork = () => {
     let task = useSelector<AppRootStateType, TaskType>(state => state.tasks['todolistId1'][0])
     if (!task) {
-        task = {id: '111', taskTitle: 'HardCode', isDone: false}
+        // task = {id: '111', title: 'HardCode', status: TaskStatuses.New}
+        task = {
+            id: '111',
+            title: 'HardCode',
+            description: '',
+            todoListId: 'todolistId1',
+            order: 0,
+            status: TaskStatuses.New,
+            priority: TaskPriorities.Low,
+            startDate: '',
+            deadline: '',
+            addedDate: '',
+        }
     }
     return (
         <Task todolistId={'todolistId1'} task={task}/>

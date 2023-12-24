@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {tasksAPI} from "./todolist-api";
+import {TaskPriorities, tasksAPI, TaskStatuses, UpdateTaskModelType} from "./todolist-api";
 
 export default {
     title: 'API/Tasks'
@@ -49,8 +49,17 @@ export const UpdateTask = () => {
 
         const todoListId = `aadf36b6-d40e-4b49-8c96-2af60e3769fb`;
         const taskId = `db5d160e-6b7b-4570-ad91-2077f700de9f`;
-        const title = 'New Title'
-        tasksAPI.updateTask(todoListId, taskId, title)
+
+        const model: UpdateTaskModelType = {
+            title: 'New Title',
+            description: '',
+            startDate: '',
+            priority: TaskPriorities.Low,
+            deadline: '',
+            status: TaskStatuses.New
+        }
+
+        tasksAPI.updateTask(todoListId, taskId, model)
             .then(res => setState(res.data))
 
     }, [])

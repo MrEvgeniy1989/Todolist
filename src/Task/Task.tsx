@@ -3,9 +3,9 @@ import {CheckBox} from "../components/Checkbox";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
-import {TaskType} from "../App/App";
-import {changeTaskStatusAC, deleteTaskAC, updateTaskTitleAC} from "../state/reducers/tasksReducer";
-import {useDispatch} from "react-redux";
+import {removeTaskTC, updateTaskTC} from "../state/reducers/tasksReducer";
+import {useAppDispatch} from "../state/store";
+import {TaskStatuses, TaskType} from "../api/todolist-api";
 
 type PropsType = {
     todolistId: string
@@ -14,19 +14,20 @@ type PropsType = {
 
 export const Task: FC<PropsType> = memo(({todolistId, task}) => {
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
-    const onChangeTaskStatusHandler = useCallback((taskId: string, newTaskStatus: boolean) => dispatch(changeTaskStatusAC(todolistId, taskId, newTaskStatus)), [todolistId, dispatch])
-    const updateTaskTitleHandler = useCallback((taskId: string, newTitle: string) => dispatch(updateTaskTitleAC(todolistId, taskId, newTitle)), [todolistId, dispatch])
+    const onChangeTaskStatusHandler = useCallback((taskId: string, newTaskStatus: TaskStatuses) => dispatch(updateTaskTC(todolistId, taskId, {status: newTaskStatus})), [todolistId, dispatch])
+    const updateTaskTitleHandler = useCallback((taskId: string, newTitle: string) => dispatch(updateTaskTC(todolistId, taskId, {title: newTitle})), [todolistId, dispatch])
     const onClickUpdateTaskTitleHandler = useCallback((newTitle: string) => updateTaskTitleHandler(task.id, newTitle), []);
-    const onClickDeleteTaskHandler = () => dispatch(deleteTaskAC(todolistId, task.id))
+    const onClickDeleteTaskHandler = () => dispatch(removeTaskTC(todolistId, task.id))
 
     return (
         <li>
-            <CheckBox checked={task.isDone} callback={(value) => onChangeTaskStatusHandler(task.id, value)}/>
+            <CheckBox checked={task.status !== TaskStatuses.New}
+                      callback={(value) => onChangeTaskStatusHandler(task.id, value)}/>
             <EditableSpan
-                className={task.isDone ? "task-done" : ''}
-                title={task.taskTitle}
+                className={task.status !== TaskStatuses.New ? "task-done" : ''}
+                title={task.title}
                 callback={onClickUpdateTaskTitleHandler}
             />
 

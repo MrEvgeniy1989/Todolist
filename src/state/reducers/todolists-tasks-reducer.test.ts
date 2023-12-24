@@ -1,12 +1,13 @@
-import {TasksStateType, TodolistType} from "../../App/App";
-import {addTodolistAC, todolistsReducer} from "./todolistsReducer";
+
+import {addTodolistAC, TodolistDomainType, todolistsReducer} from "./todolistsReducer";
 import {tasksReducer} from "./tasksReducer";
 import {v1} from "uuid";
+import {TaskPriorities, TasksStateType, TaskStatuses, TodolistType} from "../../api/todolist-api";
 
 let todolistId1: string
 let todolistId2: string
 
-let startStateTodolists: TodolistType[]
+let startStateTodolists: TodolistDomainType[]
 let startStateTasks: TasksStateType
 
 beforeEach(() => {
@@ -14,24 +15,146 @@ beforeEach(() => {
     todolistId2 = v1()
 
     startStateTodolists = [
-        {id: todolistId1, todoTitle: "Что изучить", filter: 'all'},
-        {id: todolistId2, todoTitle: "Что купить", filter: 'all'},
+        {
+            id: todolistId1,
+            title: "Что изучить",
+            filter: 'all',
+            addedDate: '',
+            order: 0
+        },
+        {
+            id: todolistId2,
+            title: "Что купить",
+            filter: 'all',
+            addedDate: '',
+            order: 0
+        },
     ]
 
     startStateTasks = {
         [todolistId1]: [
-            {id: v1(), taskTitle: "HTML", isDone: true},
-            {id: v1(), taskTitle: "CSS", isDone: true},
-            {id: v1(), taskTitle: "JS", isDone: true},
-            {id: v1(), taskTitle: "React", isDone: false},
-            {id: v1(), taskTitle: "Redux", isDone: false}
+            {
+                id: v1(),
+                title: 'HTML',
+                description: '',
+                todoListId: todolistId1,
+                order: 0,
+                status: TaskStatuses.Completed,
+                priority: TaskPriorities.Low,
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+            },
+            {
+                id: v1(),
+                title: 'CSS',
+                description: '',
+                todoListId: todolistId1,
+                order: 0,
+                status: TaskStatuses.Completed,
+                priority: TaskPriorities.Low,
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+            },
+            {
+                id: v1(),
+                title: 'JS',
+                description: '',
+                todoListId: todolistId1,
+                order: 0,
+                status: TaskStatuses.Completed,
+                priority: TaskPriorities.Low,
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+            },
+            {
+                id: v1(),
+                title: 'React',
+                description: '',
+                todoListId: todolistId1,
+                order: 0,
+                status: TaskStatuses.New,
+                priority: TaskPriorities.Low,
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+            },
+            {
+                id: v1(),
+                title: 'Redux',
+                description: '',
+                todoListId: todolistId1,
+                order: 0,
+                status: TaskStatuses.New,
+                priority: TaskPriorities.Low,
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+            },
         ],
         [todolistId2]: [
-            {id: v1(), taskTitle: "Milk", isDone: true},
-            {id: v1(), taskTitle: "Chocolate", isDone: false},
-            {id: v1(), taskTitle: "Bread", isDone: true},
-            {id: v1(), taskTitle: "Butter", isDone: true},
-            {id: v1(), taskTitle: "Banana", isDone: false}
+            {
+                id: v1(),
+                title: 'Milk',
+                description: '',
+                todoListId: todolistId2,
+                order: 0,
+                status: TaskStatuses.Completed,
+                priority: TaskPriorities.Low,
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+            },
+            {
+                id: v1(),
+                title: 'Chocolate',
+                description: '',
+                todoListId: todolistId2,
+                order: 0,
+                status: TaskStatuses.New,
+                priority: TaskPriorities.Low,
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+            },
+            {
+                id: v1(),
+                title: 'Bread',
+                description: '',
+                todoListId: todolistId2,
+                order: 0,
+                status: TaskStatuses.Completed,
+                priority: TaskPriorities.Low,
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+            },
+            {
+                id: v1(),
+                title: 'Butter',
+                description: '',
+                todoListId: todolistId2,
+                order: 0,
+                status: TaskStatuses.Completed,
+                priority: TaskPriorities.Low,
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+            },
+            {
+                id: v1(),
+                title: 'Banana',
+                description: '',
+                todoListId: todolistId2,
+                order: 0,
+                status: TaskStatuses.New,
+                priority: TaskPriorities.Low,
+                startDate: '',
+                deadline: '',
+                addedDate: '',
+            },
         ]
     }
 })

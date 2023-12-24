@@ -1,38 +1,43 @@
-import React, {FC, memo, useCallback, useMemo} from 'react';
-import {FilterType, TaskType} from "./App/App";
+import React, {FC, memo, useCallback, useEffect, useMemo} from 'react';
 import {AddItemForm} from "./AddItemForm/AddItemForm";
 import {EditableSpan} from "./EditableSpan/EditableSpan";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./state/store";
-import {addTaskAC} from "./state/reducers/tasksReducer";
+import {useSelector} from "react-redux";
+import {AppRootStateType, useAppDispatch} from "./state/store";
+import {addTaskAC, addTaskTC, getTasksTC} from "./state/reducers/tasksReducer";
 import {changeFilterAC, changeTodoTitleAC, deleteTodolistAC} from "./state/reducers/todolistsReducer";
 import {MyButton} from "./components/MyButton";
 import {Task} from "./Task/Task";
+import {FilterType, TaskStatuses, TaskType} from "./api/todolist-api";
 
-type TodoListType = {
+type PropsType = {
     todolistId: string
     todoTitle: string
     filter: FilterType
 }
 
 
-export const TodoList: FC<TodoListType> = memo(({
+export const TodoList: FC<PropsType> = memo(({
                                                     todolistId,
                                                     todoTitle,
                                                     filter,
                                                 }) => {
+
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(getTasksTC(todolistId))
+    }, []);
+
     let tasks = useSelector<AppRootStateType, TaskType[]>(state => state.tasks[todolistId])
-    const dispatch = useDispatch()
 
     tasks = useMemo(() => {
-        console.log('useMemo')
         let filteredTasks = tasks
         if (filter === "active") {
-            filteredTasks = filteredTasks.filter((task) => !task.isDone)
+            filteredTasks = filteredTasks.filter((task) => task.status === TaskStatuses.New)
         } else if (filter === "completed") {
-            filteredTasks = filteredTasks.filter((task) => task.isDone)
+            filteredTasks = filteredTasks.filter((task) => task.status === TaskStatuses.Completed)
         }
         return filteredTasks
     }, [filter, tasks]);
@@ -44,7 +49,7 @@ export const TodoList: FC<TodoListType> = memo(({
         )
     })
 
-    const addTaskHandler = useCallback((newTaskTitle: string) => dispatch(addTaskAC(todolistId, newTaskTitle)), [todolistId, dispatch])
+    const addTaskHandler = useCallback((newTaskTitle: string) => dispatch(addTaskTC(todolistId, newTaskTitle)), [todolistId, dispatch])
     const onClickDeleteTodolistHandler = useCallback(() => dispatch(deleteTodolistAC(todolistId)), [todolistId, dispatch])
     const changeTodoTitleHandler = useCallback((newTitle: string) => dispatch(changeTodoTitleAC(todolistId, newTitle)), [todolistId, dispatch])
 
