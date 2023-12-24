@@ -56,11 +56,11 @@ export const tasksReducer = (state: TasksStateType = initialState, action: actio
             return {...state, [action.todolistId]: state[action.todolistId].map(task => task.id === action.taskId ? {...task, ...action.domainModel} : task)}
         }
         case "ADD_TODOLIST": {
-            return {...state, [action.payload.todolistId]: []}
+            return {...state, [action.todolist.id]: []}
         }
         case "DELETE_TODOLIST": {
             const copyState = {...state}
-            delete copyState[action.payload.todolistId]
+            delete copyState[action.todolistId]
             return copyState
         }
         // case "CHANGE_TASK_STATUS": {
@@ -122,7 +122,7 @@ export const getTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
 }
 export const removeTaskTC = (todolistId: string, taskId: string) => (dispatch: Dispatch) => {
     tasksAPI.deleteTask(todolistId, taskId)
-        .then(res => {
+        .then(() => {
             dispatch(deleteTaskAC(todolistId, taskId))
         })
 }
@@ -147,7 +147,7 @@ export const updateTaskTC = (todolistId: string, taskId: string, domainModel: Up
         }
 
         tasksAPI.updateTask(todolistId, taskId, model)
-            .then(res => {
+            .then(() => {
                 dispatch(updateTaskAC(todolistId, taskId, domainModel))
             })
     }

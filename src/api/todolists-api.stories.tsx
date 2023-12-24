@@ -46,7 +46,7 @@ export const UpdateTodolistTitle = () => {
 
         const todoListId = `04b9b391-cb35-413b-bdfd-4bbb486e9dbf`;
         const title = 'New Title'
-        todolistsAPI.updateTodolist(todoListId, title)
+        todolistsAPI.changeTodolistTitle(todoListId, title)
             .then(res => setState(res.data))
 
     }, [])

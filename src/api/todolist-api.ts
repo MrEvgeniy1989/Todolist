@@ -15,7 +15,7 @@ export const todolistsAPI = {
     deleteTodolist(todoListId: string) {
         return instance.delete<ResponseType>(`/todo-lists/${todoListId}`)
     },
-    updateTodolist(todoListId: string, title: string) {
+    changeTodolistTitle(todoListId: string, title: string) {
         return instance.put<ResponseType, AxiosResponse<ResponseType>, {title: string}>(`/todo-lists/${todoListId}`, {title})
     }
 }
@@ -90,11 +90,11 @@ export type UpdateTaskModelType = {
     startDate: string
     deadline: string
 }
-type GetTasksResponse = {
-    error: string | null
-    totalCount: number
-    items: TaskType[]
-}
+// type GetTasksResponse = {
+//     error: string | null
+//     totalCount: number
+//     items: TaskType[]
+// }
 
 export type FilterType = "all" | "active" | "completed"
 export type TasksStateType = {

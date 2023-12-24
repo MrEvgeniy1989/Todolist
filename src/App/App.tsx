@@ -6,10 +6,8 @@ import ButtonAppBar from "../ButtonAppBar";
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper'
-import {addTodolistAC, getTodolistsTC, TodolistDomainType} from "../state/reducers/todolistsReducer";
+import {addTodolistTC, getTodolistsTC, TodolistDomainType} from "../state/reducers/todolistsReducer";
 import {useAppDispatch, useAppSelector} from "../state/store";
-import {TaskType} from "../api/todolist-api";
-
 
 
 export const App = () => {
@@ -20,7 +18,7 @@ export const App = () => {
         dispatch(getTodolistsTC())
     }, []);
 
-    const addTodolist = useCallback((newTodolistTitle: string) => dispatch(addTodolistAC(newTodolistTitle)), [dispatch])
+    const addTodolist = useCallback((newTodolistTitle: string) => dispatch(addTodolistTC(newTodolistTitle)), [dispatch])
 
     return (
         <div className="App">
