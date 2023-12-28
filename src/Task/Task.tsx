@@ -1,10 +1,10 @@
 import React, {FC, memo, useCallback} from 'react';
 import {CheckBox} from "../components/Checkbox";
-import {EditableSpan} from "../EditableSpan/EditableSpan";
+import {EditableSpan} from "../components/EditableSpan/EditableSpan";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
-import {removeTaskTC, updateTaskTC} from "../state/reducers/tasksReducer";
-import {useAppDispatch} from "../state/store";
+import {removeTaskTC, updateTaskTC} from "../store/reducers/tasks-reducer";
+import {useAppDispatch} from "../store/store";
 import {TaskStatuses, TaskType} from "../api/todolist-api";
 
 type PropsType = {

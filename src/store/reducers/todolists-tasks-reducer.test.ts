@@ -1,4 +1,4 @@
-import {TodolistDomainType} from "./todolistsReducer";
+import {TodolistDomainType} from "./todolists-reducer";
 import {v1} from "uuid";
 import {TaskPriorities, TasksStateType, TaskStatuses} from "../../api/todolist-api";
 
@@ -17,6 +17,7 @@ beforeEach(() => {
             id: todolistId1,
             title: "Что изучить",
             filter: 'all',
+            entityStatus: "idle",
             addedDate: '',
             order: 0
         },
@@ -24,6 +25,7 @@ beforeEach(() => {
             id: todolistId2,
             title: "Что купить",
             filter: 'all',
+            entityStatus: "idle",
             addedDate: '',
             order: 0
         },

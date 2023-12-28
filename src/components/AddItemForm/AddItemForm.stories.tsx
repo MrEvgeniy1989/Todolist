@@ -3,8 +3,6 @@ import {AddItemForm, AddItemFormPropsType} from "./AddItemForm";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import React, {ChangeEvent, FC, KeyboardEvent, useState} from "react";
-import {action} from '@storybook/addon-actions';
-import {Task} from "../Task/Task";
 
 
 const meta: Meta<typeof AddItemForm> = {

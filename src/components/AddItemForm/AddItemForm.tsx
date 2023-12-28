@@ -4,9 +4,10 @@ import TextField from "@mui/material/TextField";
 
 export type AddItemFormPropsType = {
     callback: (newTitle: string) => void
+    disabled?: boolean
 }
 
-export const AddItemForm: FC<AddItemFormPropsType> = memo(({callback}) => {
+export const AddItemForm: FC<AddItemFormPropsType> = memo(({callback, disabled}) => {
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const [error, setError] = useState<string | null>('')
 
@@ -38,9 +39,16 @@ export const AddItemForm: FC<AddItemFormPropsType> = memo(({callback}) => {
                        error={!!error}
                        value={newTaskTitle}
                        onChange={onChangeNewTaskTitleHandler}
-                       onKeyDown={onKeyDownAddItemHandler}/>
-            <Button variant={'contained'} color={'primary'} onClick={onClickAddTaskHandler} disabled={!newTaskTitle}
-                    style={stylesButton}>+</Button>
+                       onKeyDown={onKeyDownAddItemHandler}
+                       disabled={disabled}
+            />
+            <Button
+                variant={'contained'}
+                color={'primary'}
+                onClick={onClickAddTaskHandler}
+                disabled={disabled}
+                style={stylesButton}
+            >+</Button>
         </div>
     )
 })

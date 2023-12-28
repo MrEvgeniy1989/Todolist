@@ -1,7 +1,7 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {Task} from "./Task";
 import {useSelector} from "react-redux";
-import {AppRootStateType} from "../state/store";
+import {AppRootStateType} from "../store/store";
 import {ReduxStoreProviderDecorator} from "../decorators/ReduxStoreProviderDecorator";
 import {TaskPriorities, TaskStatuses, TaskType} from "../api/todolist-api";
 

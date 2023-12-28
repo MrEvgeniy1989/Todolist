@@ -1,28 +1,31 @@
 import React, {FC, memo, useCallback, useEffect, useMemo} from 'react';
-import {AddItemForm} from "./AddItemForm/AddItemForm";
-import {EditableSpan} from "./EditableSpan/EditableSpan";
+import {AddItemForm} from "./components/AddItemForm/AddItemForm";
+import {EditableSpan} from "./components/EditableSpan/EditableSpan";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
 import {useSelector} from "react-redux";
-import {AppRootStateType, useAppDispatch} from "./state/store";
-import {addTaskTC, getTasksTC} from "./state/reducers/tasksReducer";
-import {changeFilterAC, changeTodolistTitleTC, deleteTodolistTC} from "./state/reducers/todolistsReducer";
+import {AppRootStateType, useAppDispatch} from "./store/store";
+import {addTaskTC, getTasksTC} from "./store/reducers/tasks-reducer";
+import {changeFilterAC, changeTodolistTitleTC, deleteTodolistTC} from "./store/reducers/todolists-reducer";
 import {MyButton} from "./components/MyButton";
 import {Task} from "./Task/Task";
 import {FilterType, TaskStatuses, TaskType} from "./api/todolist-api";
+import {RequestStatusType} from "./store/reducers/app-reducer";
 
 type PropsType = {
     todolistId: string
     todoTitle: string
     filter: FilterType
+    entityStatus: RequestStatusType
 }
 
 
 export const TodoList: FC<PropsType> = memo(({
-                                                    todolistId,
-                                                    todoTitle,
-                                                    filter,
-                                                }) => {
+                                                 todolistId,
+                                                 todoTitle,
+                                                 filter,
+                                                 entityStatus,
+                                             }) => {
 
     const dispatch = useAppDispatch()
 
@@ -60,20 +63,23 @@ export const TodoList: FC<PropsType> = memo(({
     return (
         <div className={'todolist'}>
             <EditableSpan className={'todolistTitle'} title={todoTitle} callback={changeTodoTitleHandler}/>
-            <IconButton aria-label="delete" onClick={onClickDeleteTodolistHandler}>
+            <IconButton aria-label="delete" onClick={onClickDeleteTodolistHandler} disabled={entityStatus === 'loading'}>
                 <Delete/>
             </IconButton>
 
-            <AddItemForm callback={addTaskHandler}/>
+            <AddItemForm callback={addTaskHandler} disabled={entityStatus === 'loading'}/>
 
             {tasks.length
                 ? <ul>{TaskList}</ul>
                 : <span>Your todolist is empty!</span>
             }
             <div>
-                <MyButton title={'All'} variant={filter === "all" ? 'contained' : "outlined"} color={'success'} onClick={onClickAllHandler}/>
-                <MyButton title={'Active'} variant={filter === "active" ? 'contained' : "outlined"} color={'primary'} onClick={onClickActiveHandler}/>
-                <MyButton title={'Completed'} variant={filter === "completed" ? 'contained' : "outlined"} color={'error'} onClick={onClickCompletedHandler}/>
+                <MyButton title={'All'} variant={filter === "all" ? 'contained' : "outlined"} color={'success'}
+                          onClick={onClickAllHandler}/>
+                <MyButton title={'Active'} variant={filter === "active" ? 'contained' : "outlined"} color={'primary'}
+                          onClick={onClickActiveHandler}/>
+                <MyButton title={'Completed'} variant={filter === "completed" ? 'contained' : "outlined"}
+                          color={'error'} onClick={onClickCompletedHandler}/>
             </div>
         </div>
     )
