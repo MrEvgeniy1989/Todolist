@@ -14,7 +14,7 @@ export const TodolistList: FC<PropsType> = () => {
 
     useEffect(() => {
         dispatch(getTodolistsTC())
-    }, []);
+    }, [dispatch]);
 
     const addTodolist = useCallback((newTodolistTitle: string) => dispatch(addTodolistTC(newTodolistTitle)), [dispatch])
 
