@@ -9,7 +9,7 @@ export type SetAppStatusType = ReturnType<typeof setAppStatusAC>
 export type SetAppErrorACType = ReturnType<typeof setAppErrorAC>
 
 const initialState = {
-    status: 'loading' as RequestStatusType,
+    status: 'idle' as RequestStatusType,
     error: null as null | string
 }
 

@@ -76,6 +76,7 @@ export const changeTodolistTitleAC = (todolistId: string, newTodolistTitle: stri
 
 // Thunks
 export const getTodolistsTC = () => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
     todolistsAPI.getTodolists()
         .then(res => {
             dispatch(setTodolists(res.data))

@@ -2,7 +2,7 @@
   /*padding: 30px;*/
   /*display: flex;*/
   background: aliceblue;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 ul {
