@@ -1,6 +1,7 @@
 import {Dispatch} from "redux";
 import {FilterType, todolistsAPI, TodolistType} from "../../api/todolist-api";
 import {RequestStatusType, setAppErrorAC, setAppStatusAC} from "./app-reducer";
+import {getTasksTC} from "./tasks-reducer";
 
 type ActionType =
     | ChangeFilterACType
@@ -9,6 +10,7 @@ type ActionType =
     | UpdateTodoTitleACType
     | SetTodolistsType
     | ChangeTodolistEntityStatusACType
+    | ClearTodolistsDataACType
 
 type ChangeFilterACType = ReturnType<typeof changeFilterAC>
 export type DeleteTodolistACType = ReturnType<typeof deleteTodolistAC>
@@ -16,6 +18,7 @@ export type AddTodolistACType = ReturnType<typeof addTodolistAC>
 type UpdateTodoTitleACType = ReturnType<typeof changeTodolistTitleAC>
 export type SetTodolistsType = ReturnType<typeof setTodolists>
 export type ChangeTodolistEntityStatusACType = ReturnType<typeof changeTodolistEntityStatusAC>
+export type ClearTodolistsDataACType = ReturnType<typeof clearTodolistsDataAC>
 
 export type TodolistDomainType = TodolistType & {
     filter: FilterType
@@ -48,6 +51,9 @@ export const todolistsReducer = (state: TodolistDomainType[] = initialState, act
                 entityStatus: action.entityStatus
             } : todolist)
         }
+        case "CLEAR-DATA": {
+            return []
+        }
         default:
             return state
     }
@@ -72,15 +78,21 @@ export const changeTodolistTitleAC = (todolistId: string, newTodolistTitle: stri
     todolistId,
     newTodolistTitle
 } as const)
-
+export const clearTodolistsDataAC = () => ({type: 'CLEAR-DATA'} as const)
 
 // Thunks
-export const getTodolistsTC = () => (dispatch: Dispatch) => {
+export const getTodolistsTC = () => (dispatch: Dispatch<any>) => {
     dispatch(setAppStatusAC('loading'))
     todolistsAPI.getTodolists()
         .then(res => {
             dispatch(setTodolists(res.data))
             dispatch(setAppStatusAC('succeeded'))
+            return res.data
+        })
+        .then(todolists => {
+            todolists.forEach(todolist => {
+                dispatch(getTasksTC(todolist.id))
+            })
         })
 }
 export const addTodolistTC = (title: string) => (dispatch: Dispatch) => {

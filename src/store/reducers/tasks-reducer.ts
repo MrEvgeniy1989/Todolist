@@ -1,4 +1,4 @@
-import {AddTodolistACType, DeleteTodolistACType, SetTodolistsType} from "./todolists-reducer";
+import {AddTodolistACType, ClearTodolistsDataACType, DeleteTodolistACType, SetTodolistsType} from "./todolists-reducer";
 import {Dispatch} from "redux";
 import {
     ErrorType,
@@ -23,6 +23,7 @@ type ActionType =
     | SetTodolistsType
     | SetTasksType
     | UpdateTaskACType
+    | ClearTodolistsDataACType
 
 type DeleteTaskACType = ReturnType<typeof deleteTaskAC>
 type AddTaskACType = ReturnType<typeof addTaskAC>
@@ -64,6 +65,9 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             const copyState = {...state}
             delete copyState[action.todolistId]
             return copyState
+        }
+        case "CLEAR-DATA": {
+            return {}
         }
         default: {
             return state
