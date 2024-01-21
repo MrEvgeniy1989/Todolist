@@ -1,54 +1,57 @@
-import React, {ChangeEvent, KeyboardEvent, FC, useState, memo} from 'react';
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import React, { ChangeEvent, KeyboardEvent, FC, useState, memo } from "react"
+import Button from "@mui/material/Button"
+import TextField from "@mui/material/TextField"
 
 export type AddItemFormPropsType = {
-    callback: (newTitle: string) => void
-    disabled?: boolean
+  callback: (newTitle: string) => void
+  disabled?: boolean
 }
 
-export const AddItemForm: FC<AddItemFormPropsType> = memo(({callback, disabled}) => {
-    const [newTaskTitle, setNewTaskTitle] = useState('')
-    const [error, setError] = useState<string | null>('')
+export const AddItemForm: FC<AddItemFormPropsType> = memo(({ callback, disabled }) => {
+  const [newTaskTitle, setNewTaskTitle] = useState("")
+  const [error, setError] = useState<string | null>("")
 
-    const onChangeNewTaskTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        error && setError(null)
-        setNewTaskTitle(event.currentTarget.value)
-    };
+  const onChangeNewTaskTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    error && setError(null)
+    setNewTaskTitle(event.currentTarget.value)
+  }
 
-    const onClickAddTaskHandler = () => {
-        if (newTaskTitle.trim()) {
-            callback(newTaskTitle.trim())
-        } else setError('Название не может быть пустым!')
-        setNewTaskTitle('')
-    };
+  const onClickAddTaskHandler = () => {
+    if (newTaskTitle.trim()) {
+      callback(newTaskTitle.trim())
+    } else setError("Название не может быть пустым!")
+    setNewTaskTitle("")
+  }
 
-    const onKeyDownAddItemHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === "Enter") {
-            onClickAddTaskHandler()
-        }
-    };
+  const onKeyDownAddItemHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      onClickAddTaskHandler()
+    }
+  }
 
-    const stylesButton = {maxWidth: '40px', maxHeight: '40px', minWidth: '40px', minHeight: '40px', marginLeft: '10px'}
+  const stylesButton = { maxWidth: "40px", maxHeight: "40px", minWidth: "40px", minHeight: "40px", marginLeft: "10px" }
 
-    return (
-        <div>
-            <TextField variant="outlined"
-                       label={error ? error : 'Введите название...'}
-                       size={'small'}
-                       error={!!error}
-                       value={newTaskTitle}
-                       onChange={onChangeNewTaskTitleHandler}
-                       onKeyDown={onKeyDownAddItemHandler}
-                       disabled={disabled}
-            />
-            <Button
-                variant={'contained'}
-                color={'primary'}
-                onClick={onClickAddTaskHandler}
-                disabled={disabled}
-                style={stylesButton}
-            >+</Button>
-        </div>
-    )
+  return (
+    <div>
+      <TextField
+        variant="outlined"
+        label={error ? error : "Введите название..."}
+        size={"small"}
+        error={!!error}
+        value={newTaskTitle}
+        onChange={onChangeNewTaskTitleHandler}
+        onKeyDown={onKeyDownAddItemHandler}
+        disabled={disabled}
+      />
+      <Button
+        variant={"contained"}
+        color={"primary"}
+        onClick={onClickAddTaskHandler}
+        disabled={disabled}
+        style={stylesButton}
+      >
+        +
+      </Button>
+    </div>
+  )
 })
