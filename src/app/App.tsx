@@ -7,15 +7,16 @@ import { TodolistList } from "features/TodolistList/TodolistList"
 import { ErrorSnackbar } from "components/ErrorSnackbar/ErrorSnackbar"
 import { Login } from "features/Login/Login"
 import { Navigate, Route, Routes } from "react-router-dom"
-import { meTC } from "features/Login/auth-reducer"
+import { meTC } from "features/Login/authReducer"
 import CircularProgress from "@mui/material/CircularProgress"
 import { useAppDispatch } from "hooks/useAppDispatch"
 import { useAppSelector } from "hooks/useAppSelector"
 import { RequestStatusType } from "app/types"
+import { selectIsInitialized, selectStatus } from "app/appSelectors"
 
 export const App = () => {
-  const status = useAppSelector<RequestStatusType>((state) => state.app.status)
-  const isInitialized = useAppSelector<boolean>((state) => state.app.isInitialized)
+  const status = useAppSelector<RequestStatusType>(selectStatus)
+  const isInitialized = useAppSelector<boolean>(selectIsInitialized)
   const dispatch = useAppDispatch()
 
   useEffect(() => {

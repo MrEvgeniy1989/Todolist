@@ -7,12 +7,14 @@ import { addTodolistTC, getTodolistsTC, TodolistDomainType } from "features/Todo
 import { Navigate } from "react-router-dom"
 import { useAppDispatch } from "hooks/useAppDispatch"
 import { useAppSelector } from "hooks/useAppSelector"
+import { selectorTodolists } from "features/TodolistList/todolistsSelectors"
+import { selectorIsLoggedIn } from "features/Login/authSelectors"
 
 type PropsType = {}
 
 export const TodolistList: FC<PropsType> = () => {
-  let todolists = useAppSelector<TodolistDomainType[]>((state) => state.todolists)
-  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn)
+  let todolists = useAppSelector<TodolistDomainType[]>(selectorTodolists)
+  const isLoggedIn = useAppSelector(selectorIsLoggedIn)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
