@@ -4,13 +4,14 @@ import ButtonAppBar from "components/ButtonAppBar/ButtonAppBar"
 import Container from "@mui/material/Container"
 import LinearProgress from "@mui/material/LinearProgress"
 import { TodolistList } from "features/TodolistList/TodolistList"
-import { RequestStatusType } from "app/app-reducer"
 import { ErrorSnackbar } from "components/ErrorSnackbar/ErrorSnackbar"
 import { Login } from "features/Login/Login"
 import { Navigate, Route, Routes } from "react-router-dom"
 import { meTC } from "features/Login/auth-reducer"
 import CircularProgress from "@mui/material/CircularProgress"
-import { useAppDispatch, useAppSelector } from "hooks/useAppDispatch"
+import { useAppDispatch } from "hooks/useAppDispatch"
+import { useAppSelector } from "hooks/useAppSelector"
+import { RequestStatusType } from "app/types"
 
 export const App = () => {
   const status = useAppSelector<RequestStatusType>((state) => state.app.status)
@@ -19,7 +20,7 @@ export const App = () => {
 
   useEffect(() => {
     dispatch(meTC())
-  }, [])
+  }, [dispatch])
 
   if (!isInitialized) {
     return (

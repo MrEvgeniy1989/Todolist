@@ -5,7 +5,8 @@ import Paper from "@mui/material/Paper"
 import { Todolist } from "features/TodolistList/Todolist/Todolist"
 import { addTodolistTC, getTodolistsTC, TodolistDomainType } from "features/TodolistList/Todolist/todolists-reducer"
 import { Navigate } from "react-router-dom"
-import { useAppDispatch, useAppSelector } from "hooks/useAppDispatch"
+import { useAppDispatch } from "hooks/useAppDispatch"
+import { useAppSelector } from "hooks/useAppSelector"
 
 type PropsType = {}
 
@@ -17,7 +18,7 @@ export const TodolistList: FC<PropsType> = () => {
   useEffect(() => {
     if (!isLoggedIn) return
     dispatch(getTodolistsTC())
-  }, [dispatch])
+  }, [dispatch, isLoggedIn])
 
   const addTodolist = useCallback((newTodolistTitle: string) => dispatch(addTodolistTC(newTodolistTitle)), [dispatch])
 

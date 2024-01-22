@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FC } from "react"
 import Checkbox from "@mui/material/Checkbox"
-import { TaskStatuses } from "api/todolist-api"
+import { TaskStatuses } from "app/enums"
 
 type PropsType = {
   checked: boolean

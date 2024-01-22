@@ -10,7 +10,8 @@ import Button from "@mui/material/Button"
 import { useFormik } from "formik"
 import { loginTC } from "./auth-reducer"
 import { Navigate } from "react-router-dom"
-import { useAppDispatch, useAppSelector } from "hooks/useAppDispatch"
+import { useAppDispatch } from "hooks/useAppDispatch"
+import { useAppSelector } from "hooks/useAppSelector"
 
 type FormikErrorType = {
   email?: string
@@ -64,7 +65,7 @@ export const Login = () => {
           <FormLabel>
             <p>
               To log in get registered
-              <a href={"https://social-network.samuraijs.com/"} target={"_blank"}>
+              <a href={"https://social-network.samuraijs.com/"} target={"_blank"} rel="noreferrer noopener">
                 {" "}
                 here
               </a>

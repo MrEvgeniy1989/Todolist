@@ -7,7 +7,8 @@ import Button from "@mui/material/Button"
 import IconButton from "@mui/material/IconButton"
 import MenuIcon from "@mui/icons-material/Menu"
 import { logOutTC } from "features/Login/auth-reducer"
-import { useAppDispatch, useAppSelector } from "hooks/useAppDispatch"
+import { useAppDispatch } from "hooks/useAppDispatch"
+import { useAppSelector } from "hooks/useAppSelector"
 
 export default function ButtonAppBar() {
   const dispatch = useAppDispatch()

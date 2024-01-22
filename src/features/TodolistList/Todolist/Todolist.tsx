@@ -6,16 +6,16 @@ import Delete from "@mui/icons-material/Delete"
 import { useSelector } from "react-redux"
 import { addTaskTC } from "features/TodolistList/Todolist/Task/tasks-reducer"
 import {
-  changeFilterAC,
   changeTodolistTitleTC,
   deleteTodolistTC,
+  todolistsActions,
 } from "features/TodolistList/Todolist/todolists-reducer"
 import { MyButton } from "components/MyButton/MyButton"
 import { Task } from "features/TodolistList/Todolist/Task/Task"
-import { FilterType, TaskStatuses, TaskType } from "api/todolist-api"
-import { RequestStatusType } from "app/app-reducer"
 import { useAppDispatch } from "hooks/useAppDispatch"
 import { AppRootStateType } from "app/store"
+import { FilterType, RequestStatusType, TaskType } from "app/types"
+import { TaskStatuses } from "app/enums"
 
 type PropsType = {
   todolistId: string
@@ -57,10 +57,34 @@ export const Todolist: FC<PropsType> = memo(({ todolistId, todoTitle, filter, en
     [todolistId, dispatch],
   )
 
-  const onClickAllHandler = useCallback(() => dispatch(changeFilterAC(todolistId, "all")), [todolistId, dispatch])
-  const onClickActiveHandler = useCallback(() => dispatch(changeFilterAC(todolistId, "active")), [todolistId, dispatch])
+  const onClickAllHandler = useCallback(
+    () =>
+      dispatch(
+        todolistsActions.changeTodolistFilter({
+          todolistId: todolistId,
+          newFilter: "all",
+        }),
+      ),
+    [todolistId, dispatch],
+  )
+  const onClickActiveHandler = useCallback(
+    () =>
+      dispatch(
+        todolistsActions.changeTodolistFilter({
+          todolistId: todolistId,
+          newFilter: "active",
+        }),
+      ),
+    [todolistId, dispatch],
+  )
   const onClickCompletedHandler = useCallback(
-    () => dispatch(changeFilterAC(todolistId, "completed")),
+    () =>
+      dispatch(
+        todolistsActions.changeTodolistFilter({
+          todolistId: todolistId,
+          newFilter: "completed",
+        }),
+      ),
     [todolistId, dispatch],
   )
   return (

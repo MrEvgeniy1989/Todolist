@@ -1,76 +1,77 @@
-import { Dispatch } from "redux"
-import { SetAppErrorACType, setAppStatusAC, SetAppStatusType, setIsInitializedAC } from "app/app-reducer"
-import { AuthAPI } from "../../api/todolist-api"
+import { AuthAPI } from "api/todolist-api"
 import { LoginType } from "./Login"
-import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils"
-import { clearTodolistsDataAC } from "features/TodolistList/Todolist/todolists-reducer"
+import { handleServerAppError, handleServerNetworkError } from "utils/error-utils"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { ResultCode } from "app/enums"
+import { AppThunk } from "app/types"
+import { appActions } from "app/app-reducer"
+import { todolistsActions } from "features/TodolistList/Todolist/todolists-reducer"
 
-// types
-type ActionsType = ReturnType<typeof setIsLoggedInAC> | SetAppStatusType | SetAppErrorACType
-type ErrorType = { message: string }
-type InitialStateType = typeof initialState
+const slice = createSlice({
+  name: "auth",
+  initialState: {
+    isLoggedIn: false,
+  },
+  reducers: {
+    setIsLoggedIn: (state, action: PayloadAction<{ isLoggedIn: boolean }>) => {
+      state.isLoggedIn = action.payload.isLoggedIn
+    },
+  },
+})
 
-const initialState = {
-  isLoggedIn: false,
-}
-
-export const authReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
-  switch (action.type) {
-    case "login/SET-IS-LOGGED-IN":
-      return { ...state, isLoggedIn: action.value }
-    default:
-      return state
-  }
-}
-// actions
-export const setIsLoggedInAC = (value: boolean) => ({ type: "login/SET-IS-LOGGED-IN", value }) as const
+export const authReducer = slice.reducer
+export const authActions = slice.actions
 
 // thunks
-export const loginTC = (data: LoginType) => async (dispatch: Dispatch) => {
-  dispatch(setAppStatusAC("loading"))
+export const loginTC =
+  (data: LoginType): AppThunk =>
+  async (dispatch) => {
+    dispatch(appActions.setAppStatus({ status: "loading" }))
 
-  try {
-    const response = await AuthAPI.login(data)
-    if (response.data.resultCode === 0) {
-      dispatch(setIsLoggedInAC(true))
-      dispatch(setAppStatusAC("succeeded"))
-    } else {
-      handleServerAppError(dispatch, response.data)
+    try {
+      const response = await AuthAPI.login(data)
+      if (response.data.resultCode === ResultCode.Succeeded) {
+        dispatch(authActions.setIsLoggedIn({ isLoggedIn: true }))
+
+        dispatch(appActions.setAppStatus({ status: "succeeded" }))
+      } else {
+        handleServerAppError(dispatch, response.data)
+      }
+    } catch (error) {
+      handleServerNetworkError(dispatch, (error as Error).message)
     }
-  } catch (error) {
-    handleServerNetworkError(dispatch, (error as ErrorType).message)
   }
-}
-export const meTC = () => async (dispatch: Dispatch) => {
-  dispatch(setAppStatusAC("loading"))
+export const meTC = (): AppThunk => async (dispatch) => {
+  // dispatch(setAppStatusAC("loading"))
 
   try {
     const response = await AuthAPI.me()
-    if (response.data.resultCode === 0) {
-      dispatch(setIsLoggedInAC(true))
-      dispatch(setAppStatusAC("succeeded"))
+    if (response.data.resultCode === ResultCode.Succeeded) {
+      dispatch(authActions.setIsLoggedIn({ isLoggedIn: true }))
+      // dispatch(setAppStatusAC("succeeded"))
     } else {
       handleServerAppError(dispatch, response.data)
     }
   } catch (error) {
-    handleServerNetworkError(dispatch, (error as ErrorType).message)
+    handleServerNetworkError(dispatch, (error as Error).message)
   } finally {
-    dispatch(setIsInitializedAC(true))
+    dispatch(appActions.setIsInitialized({ isInitialized: true }))
   }
 }
-export const logOutTC = () => async (dispatch: Dispatch) => {
-  dispatch(setAppStatusAC("loading"))
+export const logOutTC = (): AppThunk => async (dispatch) => {
+  dispatch(appActions.setAppStatus({ status: "loading" }))
 
   try {
     const response = await AuthAPI.logOut()
-    if (response.data.resultCode === 0) {
-      dispatch(setIsLoggedInAC(false))
-      dispatch(setAppStatusAC("succeeded"))
-      dispatch(clearTodolistsDataAC())
+    if (response.data.resultCode === ResultCode.Succeeded) {
+      dispatch(authActions.setIsLoggedIn({ isLoggedIn: false }))
+
+      dispatch(appActions.setAppStatus({ status: "succeeded" }))
+      dispatch(todolistsActions.clearData())
     } else {
       handleServerAppError(dispatch, response.data)
     }
   } catch (error) {
-    handleServerNetworkError(dispatch, (error as ErrorType).message)
+    handleServerNetworkError(dispatch, (error as Error).message)
   }
 }

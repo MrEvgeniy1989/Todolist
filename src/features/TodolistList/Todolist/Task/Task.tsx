@@ -4,8 +4,9 @@ import { EditableSpan } from "components/EditableSpan/EditableSpan"
 import IconButton from "@mui/material/IconButton"
 import Delete from "@mui/icons-material/Delete"
 import { removeTaskTC, updateTaskTC } from "features/TodolistList/Todolist/Task/tasks-reducer"
-import { TaskStatuses, TaskType } from "api/todolist-api"
 import { useAppDispatch } from "hooks/useAppDispatch"
+import { TaskStatuses } from "app/enums"
+import { TaskType } from "app/types"
 
 type PropsType = {
   todolistId: string
