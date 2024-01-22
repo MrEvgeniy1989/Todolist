@@ -5,11 +5,7 @@ import IconButton from "@mui/material/IconButton"
 import Delete from "@mui/icons-material/Delete"
 import { useSelector } from "react-redux"
 import { addTaskTC } from "features/TodolistList/Todolist/Task/tasks-reducer"
-import {
-  changeTodolistTitleTC,
-  deleteTodolistTC,
-  todolistsActions,
-} from "features/TodolistList/Todolist/todolists-reducer"
+import { changeTodolistTitleTC, deleteTodolistTC, todolistsActions } from "features/TodolistList/todolists-reducer"
 import { MyButton } from "components/MyButton/MyButton"
 import { Task } from "features/TodolistList/Todolist/Task/Task"
 import { useAppDispatch } from "hooks/useAppDispatch"

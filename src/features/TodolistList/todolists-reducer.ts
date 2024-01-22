@@ -4,6 +4,7 @@ import { AppThunk, FilterType, RequestStatusType, TodolistType } from "app/types
 import { todolistsAPI } from "api/todolist-api"
 import { handleServerAppError } from "utils/error-utils"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { clearData } from "common/actions/commonActions"
 
 export type TodolistDomainType = TodolistType & {
   filter: FilterType
@@ -54,9 +55,11 @@ const slice = createSlice({
     setTodolists: (state, action: PayloadAction<{ todolists: TodolistType[] }>) => {
       return action.payload.todolists.map((todolist) => ({ ...todolist, filter: "all", entityStatus: "idle" }))
     },
-    clearData: () => {
+  },
+  extraReducers: (builder) => {
+    builder.addCase(clearData, () => {
       return []
-    },
+    })
   },
 })
 
