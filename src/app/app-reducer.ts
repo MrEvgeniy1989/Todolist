@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { RequestStatusType } from "app/types"
+import { RequestStatusType } from "common/types/types"
 
 const slice = createSlice({
   name: "app",
