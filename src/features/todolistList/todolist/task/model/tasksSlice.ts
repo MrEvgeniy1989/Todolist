@@ -1,9 +1,9 @@
 import { handleServerNetworkError } from "common/utils/handleServerNetworkError"
 import { tasksAPI } from "features/todolistList/todolist/task/api/tasksApi"
 import { ResultCode, TaskPriorities, TaskStatuses } from "common/enums/enums"
-import { appActions } from "app/app-reducer"
+import { appActions } from "app/appSlice"
 import { createSlice } from "@reduxjs/toolkit"
-import { todolistsActions } from "features/todolistList/model/todolistsReducer"
+import { todolistsActions } from "features/todolistList/model/todolistsSlice"
 import { clearData } from "common/actions/commonActions"
 import { createAppAsyncThunk } from "common/utils/createAppAsyncThunk"
 import { handleServerAppError } from "common/utils/handleServerAppError"
@@ -15,6 +15,11 @@ const slice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(todolistsActions.fetchTodolists.fulfilled, (state, action) => {
+        action.payload.todolists.forEach((todolist) => {
+          state[todolist.id] = []
+        })
+      })
       .addCase(fetchTasks.fulfilled, (state, action) => {
         state[action.payload.todolistId] = action.payload.tasks
       })
@@ -37,14 +42,11 @@ const slice = createSlice({
           }
         }
       })
-      .addCase(todolistsActions.addTodolist, (state, action) => {
+      .addCase(todolistsActions.addTodolist.fulfilled, (state, action) => {
         state[action.payload.todolist.id] = []
       })
-      .addCase(todolistsActions.removeTodolist, (state, action) => {
+      .addCase(todolistsActions.deleteTodolist.fulfilled, (state, action) => {
         delete state[action.payload.todolistId]
-      })
-      .addCase(todolistsActions.setTodolists, (state, action) => {
-        action.payload.todolists.forEach((todolist) => (state[todolist.id] = []))
       })
       .addCase(clearData, () => {
         return {}
@@ -171,5 +173,5 @@ export type UpdateDomainTaskModelType = {
 }
 
 export const tasksReducer = slice.reducer
-export const tasksActions = slice.actions
+// export const tasksActions = slice.actions
 export const tasksThunks = { fetchTasks, addTask, removeTask, updateTask }

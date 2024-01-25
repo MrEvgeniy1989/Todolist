@@ -1,7 +1,7 @@
 import { handleServerNetworkError } from "common/utils/handleServerNetworkError"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { ResultCode } from "common/enums/enums"
-import { appActions } from "app/app-reducer"
+import { appActions } from "app/appSlice"
 import { clearData } from "common/actions/commonActions"
 import { AppThunk } from "app/store"
 import { handleServerAppError } from "common/utils/handleServerAppError"

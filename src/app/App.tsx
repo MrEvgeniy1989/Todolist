@@ -7,7 +7,7 @@ import { TodolistList } from "features/todolistList/ui/TodolistList/TodolistList
 import { ErrorSnackbar } from "common/components/ErrorSnackbar/ErrorSnackbar"
 import { Login } from "features/auth/ui/Login/Login"
 import { Navigate, Route, Routes } from "react-router-dom"
-import { meTC } from "features/auth/model/authReducer"
+import { meTC } from "features/auth/model/authSlice"
 import CircularProgress from "@mui/material/CircularProgress"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { useAppSelector } from "common/hooks/useAppSelector"

@@ -4,14 +4,14 @@ import { EditableSpan } from "common/components/EditableSpan/EditableSpan"
 import IconButton from "@mui/material/IconButton"
 import Delete from "@mui/icons-material/Delete"
 import { useSelector } from "react-redux"
-import { changeTodolistTitleTC, deleteTodolistTC, todolistsActions } from "features/todolistList/model/todolistsReducer"
+import { todolistsActions } from "features/todolistList/model/todolistsSlice"
 import { MyButton } from "common/components/MyButton/MyButton"
 import { Task } from "features/todolistList/todolist/task/ui/Task/Task"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { AppRootStateType } from "app/store"
 import { RequestStatusType } from "common/types/types"
 import { TaskStatuses } from "common/enums/enums"
-import { tasksThunks } from "features/todolistList/todolist/task/model/tasks-reducer"
+import { tasksThunks } from "features/todolistList/todolist/task/model/tasksSlice"
 import { FilterType } from "features/todolistList/api/todolistsApi.types"
 import { TaskType } from "features/todolistList/todolist/task/api/tasksApi.types"
 
@@ -49,9 +49,12 @@ export const Todolist: FC<PropsType> = memo(({ todolistId, todoTitle, filter, en
     (newTaskTitle: string) => dispatch(tasksThunks.addTask({ todolistId, title: newTaskTitle })),
     [todolistId, dispatch],
   )
-  const onClickDeleteTodolistHandler = useCallback(() => dispatch(deleteTodolistTC(todolistId)), [todolistId, dispatch])
+  const onClickDeleteTodolistHandler = useCallback(
+    () => dispatch(todolistsActions.deleteTodolist(todolistId)),
+    [todolistId, dispatch],
+  )
   const changeTodoTitleHandler = useCallback(
-    (newTitle: string) => dispatch(changeTodolistTitleTC(todolistId, newTitle)),
+    (title: string) => dispatch(todolistsActions.changeTodolistTitle({ todolistId, title })),
     [todolistId, dispatch],
   )
 

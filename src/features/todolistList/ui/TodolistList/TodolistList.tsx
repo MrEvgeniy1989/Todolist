@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid"
 import { AddItemForm } from "common/components/AddItemForm/AddItemForm"
 import Paper from "@mui/material/Paper"
 import { Todolist } from "features/todolistList/todolist/ui/Todolist/Todolist"
-import { addTodolistTC, getTodolistsTC, TodolistDomainType } from "features/todolistList/model/todolistsReducer"
+import { TodolistDomainType, todolistsActions } from "features/todolistList/model/todolistsSlice"
 import { Navigate } from "react-router-dom"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { useAppSelector } from "common/hooks/useAppSelector"
@@ -19,10 +19,13 @@ export const TodolistList: FC<PropsType> = () => {
 
   useEffect(() => {
     if (!isLoggedIn) return
-    dispatch(getTodolistsTC())
+    dispatch(todolistsActions.fetchTodolists())
   }, [dispatch, isLoggedIn])
 
-  const addTodolist = useCallback((newTodolistTitle: string) => dispatch(addTodolistTC(newTodolistTitle)), [dispatch])
+  const addTodolist = useCallback(
+    (newTodolistTitle: string) => dispatch(todolistsActions.addTodolist(newTodolistTitle)),
+    [dispatch],
+  )
 
   if (!isLoggedIn) {
     return <Navigate to={"/login"} />
