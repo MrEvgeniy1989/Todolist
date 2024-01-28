@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, memo, useState } from "react"
+import React, { ChangeEvent, KeyboardEvent, FocusEvent, FC, memo, useState } from "react"
 import TextField from "@mui/material/TextField"
 
 type PropsType = {
@@ -14,16 +14,34 @@ export const EditableSpan: FC<PropsType> = memo(({ className, title, callback })
   const onChangeNewTaskTitleHandler = (event: ChangeEvent<HTMLInputElement>) =>
     setNewTaskTitle(event.currentTarget.value)
   const editHandler = () => {
+    if (edit) {
+      if (newTaskTitle !== title) {
+        callback(newTaskTitle)
+      }
+    }
     setEdit(!edit)
-    if (edit) updateTask()
   }
-  const updateTask = () => callback(newTaskTitle)
+  const onKeyDownChangeEditHandler = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter") {
+      editHandler()
+    }
+    if (e.key === "Escape") {
+      setNewTaskTitle(title)
+      setEdit(!edit)
+    }
+  }
+  const onFocusChangeEditHandler = (e: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    e.currentTarget.select()
+  }
+
   return edit ? (
     <TextField
       variant="standard"
       value={newTaskTitle}
       onChange={onChangeNewTaskTitleHandler}
       onBlur={editHandler}
+      onKeyDown={onKeyDownChangeEditHandler}
+      onFocus={onFocusChangeEditHandler}
       autoFocus
     />
   ) : (

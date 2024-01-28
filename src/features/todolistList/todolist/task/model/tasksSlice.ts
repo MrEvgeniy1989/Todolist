@@ -66,7 +66,7 @@ export const fetchTasks = createAppAsyncThunk<{ todolistId: string; tasks: TaskT
       dispatch(appActions.setAppStatus({ status: "succeeded" }))
       return { todolistId: todolistId, tasks: response.data.items }
     } catch (e) {
-      handleServerNetworkError(dispatch, e as Error)
+      handleServerNetworkError(dispatch, e)
       return rejectWithValue(null)
     }
   },
@@ -88,7 +88,7 @@ export const addTask = createAppAsyncThunk<{ task: TaskType }, { todolistId: str
         return rejectWithValue(null)
       }
     } catch (e) {
-      handleServerNetworkError(dispatch, e as Error)
+      handleServerNetworkError(dispatch, e)
       return rejectWithValue(null)
     }
   },
@@ -113,7 +113,7 @@ export const removeTask = createAppAsyncThunk<
       return rejectWithValue(null)
     }
   } catch (e) {
-    handleServerNetworkError(dispatch, e as Error)
+    handleServerNetworkError(dispatch, e)
     return rejectWithValue(null)
   }
 })
@@ -157,7 +157,7 @@ export const updateTask = createAppAsyncThunk<
       return rejectWithValue(null)
     }
   } catch (e) {
-    handleServerNetworkError(dispatch, e as Error)
+    handleServerNetworkError(dispatch, e)
     return rejectWithValue(null)
   }
 })

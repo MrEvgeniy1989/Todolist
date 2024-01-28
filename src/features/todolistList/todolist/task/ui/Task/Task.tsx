@@ -39,16 +39,18 @@ export const Task: FC<PropsType> = memo(({ todolistId, task }) => {
   const onClickDeleteTaskHandler = () => dispatch(tasksThunks.removeTask({ todolistId, taskId: task.id }))
 
   return (
-    <li>
-      <CheckBox
-        checked={task.status !== TaskStatuses.New}
-        callback={(value) => onChangeTaskStatusHandler(task.id, value)}
-      />
-      <EditableSpan
-        className={task.status !== TaskStatuses.New ? "task-done" : ""}
-        title={task.title}
-        callback={onClickUpdateTaskTitleHandler}
-      />
+    <li style={{ display: "flex", justifyContent: "space-between" }}>
+      <div>
+        <CheckBox
+          checked={task.status !== TaskStatuses.New}
+          callback={(value) => onChangeTaskStatusHandler(task.id, value)}
+        />
+        <EditableSpan
+          className={task.status !== TaskStatuses.New ? "task-done" : ""}
+          title={task.title}
+          callback={onClickUpdateTaskTitleHandler}
+        />
+      </div>
 
       <IconButton aria-label="deleteTask" onClick={onClickDeleteTaskHandler}>
         <Delete />

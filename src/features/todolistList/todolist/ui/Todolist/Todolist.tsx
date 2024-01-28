@@ -90,10 +90,12 @@ export const Todolist: FC<PropsType> = memo(({ todolistId, todoTitle, filter, en
   )
   return (
     <div className={"todolist"}>
-      <EditableSpan className={"todolistTitle"} title={todoTitle} callback={changeTodoTitleHandler} />
-      <IconButton aria-label="delete" onClick={onClickDeleteTodolistHandler} disabled={entityStatus === "loading"}>
-        <Delete />
-      </IconButton>
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "10px" }}>
+        <EditableSpan className={"todolistTitle"} title={todoTitle} callback={changeTodoTitleHandler} />
+        <IconButton aria-label="delete" onClick={onClickDeleteTodolistHandler} disabled={entityStatus === "loading"}>
+          <Delete />
+        </IconButton>
+      </div>
 
       <AddItemForm callback={addTaskHandler} disabled={entityStatus === "loading"} />
 
