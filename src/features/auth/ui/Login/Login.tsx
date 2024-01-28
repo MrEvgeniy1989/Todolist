@@ -8,11 +8,12 @@ import FormLabel from "@mui/material/FormLabel"
 import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
 import { useFormik } from "formik"
-import { loginTC } from "features/auth/model/authSlice"
 import { Navigate } from "react-router-dom"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { useAppSelector } from "common/hooks/useAppSelector"
 import { selectorIsLoggedIn } from "features/auth/model/authSelectors"
+import { authThunks } from "features/auth/model/authSlice"
+import { BaseResponseType } from "common/types/types"
 
 type FormikErrorType = {
   email?: string
@@ -31,22 +32,28 @@ export const Login = () => {
       rememberMe: false,
     },
     validate: (values) => {
-      const errors: FormikErrorType = {}
-
-      if (!values.email) {
-        errors.email = "Required"
-      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-        errors.email = "Invalid email address"
-      }
-
-      if (!values.password) {
-        errors.password = "Required"
-      }
-
-      return errors
+      // const errors: FormikErrorType = {}
+      //
+      // if (!values.email) {
+      //   errors.email = "Required"
+      // } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+      //   errors.email = "Invalid email address"
+      // }
+      //
+      // if (!values.password) {
+      //   errors.password = "Required"
+      // }
+      //
+      // return errors
     },
-    onSubmit: (values) => {
-      dispatch(loginTC(values))
+    onSubmit: (values, formikHelpers) => {
+      dispatch(authThunks.login(values))
+        .unwrap()
+        .catch((err: BaseResponseType) => {
+          err.fieldsErrors.forEach((fieldsError) => {
+            return formikHelpers.setFieldError(fieldsError.field, fieldsError.error)
+          })
+        })
     },
   })
 

@@ -1,5 +1,5 @@
 import { instance } from "common/api/instance"
-import { ResponseType } from "common/types/types"
+import { BaseResponseType } from "common/types/types"
 import { AxiosResponse } from "axios"
 import { TodolistType } from "features/todolistList/api/todolistsApi.types"
 
@@ -9,9 +9,9 @@ export const todolistsAPI = {
   },
   createTodolist(title: string) {
     return instance.post<
-      ResponseType<{ item: TodolistType }>,
+      BaseResponseType<{ item: TodolistType }>,
       AxiosResponse<
-        ResponseType<{
+        BaseResponseType<{
           item: TodolistType
         }>
       >,
@@ -19,12 +19,12 @@ export const todolistsAPI = {
     >(`/todo-lists`, { title })
   },
   deleteTodolist(todoListId: string) {
-    return instance.delete<ResponseType>(`/todo-lists/${todoListId}`)
+    return instance.delete<BaseResponseType>(`/todo-lists/${todoListId}`)
   },
   changeTodolistTitle(todoListId: string, title: string) {
     return instance.put<
-      ResponseType,
-      AxiosResponse<ResponseType>,
+      BaseResponseType,
+      AxiosResponse<BaseResponseType>,
       {
         title: string
       }

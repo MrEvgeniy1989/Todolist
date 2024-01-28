@@ -7,12 +7,12 @@ import { TodolistList } from "features/todolistList/ui/TodolistList/TodolistList
 import { ErrorSnackbar } from "common/components/ErrorSnackbar/ErrorSnackbar"
 import { Login } from "features/auth/ui/Login/Login"
 import { Navigate, Route, Routes } from "react-router-dom"
-import { meTC } from "features/auth/model/authSlice"
 import CircularProgress from "@mui/material/CircularProgress"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { useAppSelector } from "common/hooks/useAppSelector"
 import { RequestStatusType } from "common/types/types"
 import { selectIsInitialized, selectStatus } from "app/appSelectors"
+import { authThunks } from "features/auth/model/authSlice"
 
 export const App = () => {
   const status = useAppSelector<RequestStatusType>(selectStatus)
@@ -20,7 +20,7 @@ export const App = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(meTC())
+    dispatch(authThunks.me())
   }, [dispatch])
 
   if (!isInitialized) {

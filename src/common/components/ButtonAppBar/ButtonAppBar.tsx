@@ -6,17 +6,17 @@ import Typography from "@mui/material/Typography"
 import Button from "@mui/material/Button"
 import IconButton from "@mui/material/IconButton"
 import MenuIcon from "@mui/icons-material/Menu"
-import { logOutTC } from "features/auth/model/authSlice"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { useAppSelector } from "common/hooks/useAppSelector"
 import { selectorIsLoggedIn } from "features/auth/model/authSelectors"
+import { authThunks } from "features/auth/model/authSlice"
 
 export default function ButtonAppBar() {
   const dispatch = useAppDispatch()
   const isLoggedIn = useAppSelector<boolean>(selectorIsLoggedIn)
 
   const onClickHandler = () => {
-    dispatch(logOutTC())
+    dispatch(authThunks.logout())
   }
 
   return (

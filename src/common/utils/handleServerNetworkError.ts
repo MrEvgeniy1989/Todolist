@@ -2,7 +2,6 @@ import { appActions } from "app/appSlice"
 import axios from "axios"
 import { Dispatch } from "redux"
 
-//todo изменить на AppDispatch
 export const handleServerNetworkError = (dispatch: Dispatch, err: unknown): void => {
   let errorMessage = "Some error occurred"
 

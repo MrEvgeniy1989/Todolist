@@ -1,10 +1,14 @@
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed"
 
-export type ResponseType<T = {}> = {
+export type FieldErrorType = {
+  field: string
+  error: string
+}
+export type BaseResponseType<D = {}> = {
   resultCode: number
   messages: string[]
-  fieldsErrors: string[]
-  data: T
+  fieldsErrors: FieldErrorType[]
+  data: D
 }
 
 export type ErrorType = {
