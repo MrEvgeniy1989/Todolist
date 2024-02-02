@@ -1,13 +1,13 @@
-import React, { ChangeEvent, KeyboardEvent, FocusEvent, FC, memo, useState } from "react"
 import TextField from "@mui/material/TextField"
+import { ChangeEvent, FocusEvent, KeyboardEvent, memo, useState } from "react"
 
-type PropsType = {
+type Props = {
   className: string
   title: string
   callback: (newTitle: string) => void
 }
 
-export const EditableSpan: FC<PropsType> = memo(({ className, title, callback }) => {
+export const EditableSpan = memo(({ className, title, callback }: Props) => {
   const [edit, setEdit] = useState(false)
   const [newTaskTitle, setNewTaskTitle] = useState(title)
 

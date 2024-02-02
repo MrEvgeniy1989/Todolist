@@ -1,6 +1,6 @@
-import { Dispatch } from "redux"
 import { appActions } from "app/appSlice"
 import { BaseResponseType } from "common/types/types"
+import { Dispatch } from "redux"
 
 /**
  * Handling an error received from the server.
@@ -20,5 +20,4 @@ export const handleServerAppError = <D>(
   if (showGlobalError) {
     dispatch(appActions.setAppError({ error: data.messages.length ? data.messages[0] : "Some error occurred" }))
   }
-  dispatch(appActions.setAppStatus({ status: "failed" }))
 }

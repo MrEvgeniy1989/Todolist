@@ -1,16 +1,16 @@
-import React, { FC, memo } from "react"
+import { memo } from "react"
 import Button, { ButtonProps } from "@mui/material/Button"
 
-// type PropsType = {
+// type Props = {
 //     title: string
 //     myVariant: 'text' | 'outlined' | 'contained'
 //     myColor: 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning'
 //     callback: () => void
 // }
 
-interface PropsType extends ButtonProps {}
+interface Props extends ButtonProps {}
 
-export const MyButton: FC<PropsType> = memo(({ title, variant, color, onClick }) => {
+export const MyButton = memo(({ title, variant, color, onClick }: Props) => {
   return (
     <Button variant={variant} color={color} onClick={onClick}>
       {title}

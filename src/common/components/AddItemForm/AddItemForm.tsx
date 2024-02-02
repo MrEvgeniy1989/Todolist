@@ -1,32 +1,43 @@
-import React, { ChangeEvent, KeyboardEvent, FC, useState, memo } from "react"
 import Button from "@mui/material/Button"
 import TextField from "@mui/material/TextField"
+import { BaseResponseType } from "common/types/types"
+import { ChangeEvent, KeyboardEvent, memo, useState } from "react"
 
-export type AddItemFormPropsType = {
-  callback: (newTitle: string) => void
+export type Props = {
+  callback: (newTitle: string) => Promise<any>
   disabled?: boolean
 }
 
-export const AddItemForm: FC<AddItemFormPropsType> = memo(({ callback, disabled }) => {
+export const AddItemForm = memo(({ callback, disabled }: Props) => {
   const [newTaskTitle, setNewTaskTitle] = useState("")
   const [error, setError] = useState<string | null>("")
 
-  const onChangeNewTaskTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  const newTaskTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
     error && setError(null)
     setNewTaskTitle(event.currentTarget.value)
   }
 
-  const onClickAddTaskHandler = () => {
+  const addItemHandler = () => {
     if (newTaskTitle.trim()) {
       callback(newTaskTitle.trim())
-    } else setError("Название не может быть пустым!")
-    setNewTaskTitle("")
+        .then(() => {
+          setNewTaskTitle("")
+        })
+        .catch((err: BaseResponseType) => {
+          if (err.resultCode) {
+            setError(err.messages[0])
+          }
+        })
+    } else setError("Title is required!")
   }
 
   const onKeyDownAddItemHandler = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
-      onClickAddTaskHandler()
+      addItemHandler()
     }
+  }
+  const errorResetHandler = () => {
+    setError("")
   }
 
   const stylesButton = { maxWidth: "40px", maxHeight: "40px", minWidth: "40px", minHeight: "40px", marginLeft: "10px" }
@@ -35,21 +46,17 @@ export const AddItemForm: FC<AddItemFormPropsType> = memo(({ callback, disabled 
     <div>
       <TextField
         variant="outlined"
-        label={error ? error : "Введите название..."}
+        label={"Enter title..."}
         size={"small"}
         error={!!error}
+        helperText={<span style={{ display: "block", maxWidth: `190px` }}>{error}</span>}
         value={newTaskTitle}
-        onChange={onChangeNewTaskTitleHandler}
+        onChange={newTaskTitleHandler}
         onKeyDown={onKeyDownAddItemHandler}
+        onFocus={errorResetHandler}
         disabled={disabled}
       />
-      <Button
-        variant={"contained"}
-        color={"primary"}
-        onClick={onClickAddTaskHandler}
-        disabled={disabled}
-        style={stylesButton}
-      >
+      <Button variant={"contained"} color={"primary"} onClick={addItemHandler} disabled={disabled} style={stylesButton}>
         +
       </Button>
     </div>

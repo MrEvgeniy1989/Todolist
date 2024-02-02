@@ -1,65 +1,24 @@
-import React from "react"
-import Grid from "@mui/material/Grid"
+import Button from "@mui/material/Button"
 import Checkbox from "@mui/material/Checkbox"
 import FormControl from "@mui/material/FormControl"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import FormGroup from "@mui/material/FormGroup"
 import FormLabel from "@mui/material/FormLabel"
+import Grid from "@mui/material/Grid"
 import TextField from "@mui/material/TextField"
-import Button from "@mui/material/Button"
-import { useFormik } from "formik"
-import { Navigate } from "react-router-dom"
-import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { useAppSelector } from "common/hooks/useAppSelector"
 import { selectorIsLoggedIn } from "features/auth/model/authSelectors"
-import { authThunks } from "features/auth/model/authSlice"
-import { BaseResponseType } from "common/types/types"
-
-type FormikErrorType = {
-  email?: string
-  password?: string
-  rememberMe?: boolean
-}
+import { useLogin } from "features/auth/ui/Login/useLogin"
+import { Navigate } from "react-router-dom"
 
 export const Login = () => {
-  const dispatch = useAppDispatch()
+  const { formik } = useLogin()
   const isLoggedIn = useAppSelector(selectorIsLoggedIn)
-
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-      rememberMe: false,
-    },
-    validate: (values) => {
-      // const errors: FormikErrorType = {}
-      //
-      // if (!values.email) {
-      //   errors.email = "Required"
-      // } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-      //   errors.email = "Invalid email address"
-      // }
-      //
-      // if (!values.password) {
-      //   errors.password = "Required"
-      // }
-      //
-      // return errors
-    },
-    onSubmit: (values, formikHelpers) => {
-      dispatch(authThunks.login(values))
-        .unwrap()
-        .catch((err: BaseResponseType) => {
-          err.fieldsErrors?.forEach((fieldsError) => {
-            return formikHelpers.setFieldError(fieldsError.field, fieldsError.error)
-          })
-        })
-    },
-  })
 
   if (isLoggedIn) {
     return <Navigate to={"/"} />
   }
+
   return (
     <Grid container justifyContent={"center"}>
       <Grid item justifyContent={"center"}>

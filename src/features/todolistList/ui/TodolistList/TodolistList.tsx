@@ -1,19 +1,17 @@
-import React, { FC, useCallback, useEffect } from "react"
 import Grid from "@mui/material/Grid"
-import { AddItemForm } from "common/components/AddItemForm/AddItemForm"
 import Paper from "@mui/material/Paper"
-import { Todolist } from "features/todolistList/todolist/ui/Todolist/Todolist"
-import { TodolistDomainType, todolistsActions } from "features/todolistList/model/todolistsSlice"
-import { Navigate } from "react-router-dom"
+import { AddItemForm } from "common/components/AddItemForm/AddItemForm"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { useAppSelector } from "common/hooks/useAppSelector"
-import { selectorTodolists } from "features/todolistList/model/todolistsSelectors"
 import { selectorIsLoggedIn } from "features/auth/model/authSelectors"
+import { selectorTodolists } from "features/todolistList/model/todolistsSelectors"
+import { todolistsActions } from "features/todolistList/model/todolistsSlice"
+import { Todolist } from "features/todolistList/ui/TodolistList/todolist/ui/Todolist/Todolist"
+import React, { useCallback, useEffect } from "react"
+import { Navigate } from "react-router-dom"
 
-type PropsType = {}
-
-export const TodolistList: FC<PropsType> = () => {
-  let todolists = useAppSelector<TodolistDomainType[]>(selectorTodolists)
+export const TodolistList = () => {
+  let todolists = useAppSelector(selectorTodolists)
   const isLoggedIn = useAppSelector(selectorIsLoggedIn)
   const dispatch = useAppDispatch()
 
@@ -22,8 +20,10 @@ export const TodolistList: FC<PropsType> = () => {
     dispatch(todolistsActions.fetchTodolists())
   }, [dispatch, isLoggedIn])
 
-  const addTodolist = useCallback(
-    (newTodolistTitle: string) => dispatch(todolistsActions.addTodolist(newTodolistTitle)),
+  const addTodolistHandler = useCallback(
+    (newTodolistTitle: string) => {
+      return dispatch(todolistsActions.addTodolist(newTodolistTitle)).unwrap()
+    },
     [dispatch],
   )
 
@@ -34,7 +34,7 @@ export const TodolistList: FC<PropsType> = () => {
   return (
     <div>
       <Grid container style={{ margin: "20px" }}>
-        <AddItemForm callback={addTodolist} />
+        <AddItemForm callback={addTodolistHandler} />
       </Grid>
 
       <Grid container>
@@ -44,7 +44,7 @@ export const TodolistList: FC<PropsType> = () => {
               <Paper elevation={24} style={{ padding: "20px" }}>
                 <Todolist
                   todolistId={todolist.id}
-                  todoTitle={todolist.title}
+                  todolistTitle={todolist.title}
                   filter={todolist.filter}
                   entityStatus={todolist.entityStatus}
                 />

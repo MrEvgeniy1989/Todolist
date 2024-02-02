@@ -1,12 +1,10 @@
-import { handleServerNetworkError } from "common/utils/handleServerNetworkError"
-import { createSlice } from "@reduxjs/toolkit"
-import { ResultCode } from "common/enums/enums"
+import { createSlice, isAnyOf, PayloadAction } from "@reduxjs/toolkit"
 import { appActions } from "app/appSlice"
 import { clearData } from "common/actions/commonActions"
-import { handleServerAppError } from "common/utils/handleServerAppError"
+import { ResultCode } from "common/enums/enums"
+import { createAppAsyncThunk } from "common/utils/createAppAsyncThunk"
 import { AuthAPI } from "features/auth/api/authApi"
 import { LoginType } from "features/auth/api/authApi.types"
-import { createAppAsyncThunk } from "common/utils/createAppAsyncThunk"
 
 const slice = createSlice({
   name: "auth",
@@ -15,75 +13,51 @@ const slice = createSlice({
   },
   reducers: {},
   extraReducers: (builder) => {
-    builder
-      .addCase(login.fulfilled, (state, action) => {
+    builder.addMatcher(
+      isAnyOf(authThunks.login.fulfilled, authThunks.logout.fulfilled, authThunks.me.fulfilled),
+      (state, action: PayloadAction<{ isLoggedIn: boolean }>) => {
         state.isLoggedIn = action.payload.isLoggedIn
-      })
-      .addCase(logout.fulfilled, (state, action) => {
-        state.isLoggedIn = action.payload.isLoggedIn
-      })
-      .addCase(me.fulfilled, (state, action) => {
-        state.isLoggedIn = action.payload.isLoggedIn
-      })
+      },
+    )
   },
 })
 
 // thunks
 const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginType>(
   `${slice.name}/login`,
-  async (data, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(appActions.setAppStatus({ status: "loading" }))
-      const response = await AuthAPI.login(data)
-      if (response.data.resultCode === ResultCode.Succeeded) {
-        dispatch(appActions.setAppStatus({ status: "succeeded" }))
-        return { isLoggedIn: true }
-      } else {
-        const isShowGlobalError = !response.data.fieldsErrors.length
-        handleServerAppError(dispatch, response.data, isShowGlobalError)
-        return rejectWithValue(response.data)
-      }
-    } catch (error) {
-      handleServerNetworkError(dispatch, error)
-      return rejectWithValue(null)
+  async (data, { rejectWithValue }) => {
+    const response = await AuthAPI.login(data)
+    if (response.data.resultCode === ResultCode.Succeeded) {
+      return { isLoggedIn: true }
+    } else {
+      // const isShowGlobalError = !response.data.fieldsErrors.length
+      // handleServerAppError(dispatch, response.data, isShowGlobalError)
+      return rejectWithValue(response.data)
     }
   },
 )
 const logout = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>(
   `${slice.name}/logout`,
   async (_, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(appActions.setAppStatus({ status: "loading" }))
-      const response = await AuthAPI.logout()
-      if (response.data.resultCode === ResultCode.Succeeded) {
-        dispatch(appActions.setAppStatus({ status: "succeeded" }))
-        dispatch(clearData())
-        return { isLoggedIn: false }
-      } else {
-        handleServerAppError(dispatch, response.data)
-        return rejectWithValue(null)
-      }
-    } catch (error) {
-      handleServerNetworkError(dispatch, error)
-      return rejectWithValue(null)
+    const res = await AuthAPI.logout()
+    if (res.data.resultCode === ResultCode.Succeeded) {
+      dispatch(clearData())
+      return { isLoggedIn: false }
+    } else {
+      return rejectWithValue(res.data)
     }
   },
 )
 const me = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>(
   `${slice.name}/me`,
   async (_, { dispatch, rejectWithValue }) => {
-    try {
-      const response = await AuthAPI.me()
-      if (response.data.resultCode === ResultCode.Succeeded) {
-        return { isLoggedIn: true }
-      } else {
-        return rejectWithValue(null)
-      }
-    } catch (error) {
-      handleServerNetworkError(dispatch, error)
-      return rejectWithValue(null)
-    } finally {
+    const res = await AuthAPI.me().finally(() => {
       dispatch(appActions.setIsInitialized({ isInitialized: true }))
+    })
+    if (res.data.resultCode === ResultCode.Succeeded) {
+      return { isLoggedIn: true }
+    } else {
+      return rejectWithValue(res.data)
     }
   },
 )
