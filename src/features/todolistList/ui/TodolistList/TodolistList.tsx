@@ -33,11 +33,11 @@ export const TodolistList = () => {
 
   return (
     <div>
-      <Grid container style={{ margin: "20px" }}>
+      <Grid container justifyContent={"center"} marginTop={"20px"}>
         <AddItemForm callback={addTodolistHandler} />
       </Grid>
 
-      <Grid container>
+      <Grid container justifyContent={"center"}>
         {todolists.map((todolist) => {
           return (
             <Grid item style={{ margin: "20px" }} key={todolist.id}>
