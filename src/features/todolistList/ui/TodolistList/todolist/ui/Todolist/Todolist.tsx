@@ -41,7 +41,7 @@ export const Todolist = memo(({ todolistId, todolistTitle, filter, entityStatus 
     <div className={s.todolist}>
       <div>
         <TodolistTitle todolistId={todolistId} todolistTitle={todolistTitle} entityStatus={entityStatus} />
-        <AddItemForm callback={addTaskHandler} disabled={entityStatus === "loading"} />
+        <AddItemForm callback={addTaskHandler} disabled={entityStatus === "loading"} entity={"task"} />
       </div>
       <Tasks todolistId={todolistId} tasks={tasks} />
       <FilterTasksButtons todolistId={todolistId} filter={filter} />

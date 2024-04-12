@@ -3,12 +3,15 @@ import TextField from "@mui/material/TextField"
 import { BaseResponseType } from "common/types/types"
 import { ChangeEvent, KeyboardEvent, memo, useState } from "react"
 
+import s from "./addItemForm.module.css"
+
 export type Props = {
   callback: (newTitle: string) => Promise<any>
   disabled?: boolean
+  entity: string
 }
 
-export const AddItemForm = memo(({ callback, disabled }: Props) => {
+export const AddItemForm = memo(({ callback, entity, disabled }: Props) => {
   const [newTaskTitle, setNewTaskTitle] = useState("")
   const [error, setError] = useState<string | null>("")
 
@@ -46,7 +49,7 @@ export const AddItemForm = memo(({ callback, disabled }: Props) => {
     <div>
       <TextField
         variant="outlined"
-        label={"Enter title..."}
+        label={`Enter ${entity} title...`}
         size={"small"}
         error={!!error}
         helperText={<span style={{ display: "block", maxWidth: `190px` }}>{error}</span>}
@@ -55,6 +58,7 @@ export const AddItemForm = memo(({ callback, disabled }: Props) => {
         onKeyDown={onKeyDownAddItemHandler}
         onFocus={errorResetHandler}
         disabled={disabled}
+        className={s.textField}
       />
       <Button variant={"contained"} color={"primary"} onClick={addItemHandler} disabled={disabled} style={stylesButton}>
         +

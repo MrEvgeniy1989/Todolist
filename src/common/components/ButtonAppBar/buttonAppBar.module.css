@@ -1,4 +1,9 @@
-.toolbar.toolbar {
+.container.container {
+    max-width: 1040px;
+    padding: 0;
+}
+
+.container .toolbar {
     display: flex;
     justify-content: flex-end;
     padding: 0;

@@ -21,8 +21,7 @@ export default function ButtonAppBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
-        <Container fixed>
-          {/*<Grid container>*/}
+        <Container fixed className={s.container}>
           <Toolbar className={s.toolbar}>
             {isLoggedIn && (
               <Button color="inherit" onClick={onClickHandler}>
@@ -30,7 +29,6 @@ export default function ButtonAppBar() {
               </Button>
             )}
           </Toolbar>
-          {/*</Grid>*/}
         </Container>
       </AppBar>
     </Box>

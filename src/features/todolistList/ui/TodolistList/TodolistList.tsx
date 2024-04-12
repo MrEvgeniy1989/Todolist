@@ -34,7 +34,7 @@ export const TodolistList = () => {
   return (
     <div>
       <Grid container justifyContent={"center"} marginTop={"20px"}>
-        <AddItemForm callback={addTodolistHandler} />
+        <AddItemForm callback={addTodolistHandler} entity={"todolist"} />
       </Grid>
 
       <Grid container justifyContent={"center"}>
